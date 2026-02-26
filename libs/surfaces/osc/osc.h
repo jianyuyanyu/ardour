@@ -732,7 +732,6 @@ class OSC : public ARDOUR::ControlProtocol, public AbstractUI<OSCUIRequest>
 	int scrub (float delta, lo_message msg);
 	int jog (float delta, lo_message msg);
 	int jog_mode (float mode, lo_message msg);
-	int set_marker (const char* types, lo_arg **argv, int argc, lo_message msg);
 	int click_level (float position);
 	int sel_previous (lo_message msg);
 	int sel_next (lo_message msg);

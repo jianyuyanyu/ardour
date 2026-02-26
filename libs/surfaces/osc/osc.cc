@@ -876,8 +876,6 @@ OSC::catchall (const char *path, const char* types, lo_arg **argv, int argc, lo_
 		ret = monitor_parse (path, types, argv, argc, msg);
 	} else if (strstr (path, X_("/select"))) {
 		ret = select_parse (path, types, argv, argc, msg);
-	} else if (!strncmp (path, X_("/marker"), 7)) {
-		ret = set_marker (types, argv, argc, msg);
 	} else if (strstr (path, X_("/goto_marker"))) {
 		ret = goto_marker (types, argv, argc, msg);
 	} else if (strstr (path, X_("/link"))) {
@@ -3183,109 +3181,6 @@ OSC::mixer_scene_state (lo_address addr, bool zero_it)
 		lo_message_free (scene_msg);
 	}
 	return 0;
-}
-
-int
-OSC::set_marker (const char* types, lo_arg **argv, int argc, lo_message msg)
-{
-	if (argc != 1) {
-		PBD::warning << "Wrong number of parameters, one only." << endmsg;
-		return -1;
-	}
-
-	const Locations::LocationList& ll (session->locations ()->list ());
-	uint32_t marker = 0;
-
-	switch (types[0]) {
-		case 's':
-			{
-				Location *cur_mark = 0;
-
-				switch (Config->get_marker_locate_priority()) {
-					case FirstMarker:
-						for (const auto& l : ll) {
-							if (l->is_mark ()) {
-								if (strcmp (&argv[0]->s, l->name().c_str()) == 0) {
-									session->request_locate (l->start_sample (), false, MustStop);
-									return 0;
-								} else if (l->start () == session->transport_sample()) {
-									cur_mark = l;
-								}
-							}
-						}
-						break;
-					case LastMarker:
-						for (auto l = ll.rbegin(); l != ll.rend(); ++l) {
-							if ((*l)->is_mark ()) {
-								if (strcmp (&argv[0]->s, (*l)->name().c_str()) == 0) {
-									session->request_locate ((*l)->start_sample (), false, MustStop);
-									return 0;
-								} else if ((*l)->start () == session->transport_sample()) {
-									cur_mark = (*l);
-								}
-							}
-						}
-						break;
-					case NextMarker:
-						Location *first = nullptr;
-						for (const auto& l : ll) {
-							if (l->is_mark ()) {
-								if (strcmp (&argv[0]->s, l->name().c_str()) == 0) {
-									if (l->start_sample() > session->transport_sample()) {
-										session->request_locate (l->start_sample (), false, MustStop);
-										return 0;
-									}
-
-									if (!first) {
-										first = l;
-									}
-								} else if (l->start () == session->transport_sample()) {
-									cur_mark = l;
-								}
-							}
-						}
-						if (first) {
-							session->request_locate (first->start_sample (), false, MustStop);
-							return 0;
-						}
-						break;
-				}
-
-				if (cur_mark) {
-					cur_mark->set_name (&argv[0]->s);
-					return 0;
-				}
-				PBD::warning << string_compose ("Marker: \"%1\" - does not exist", &argv[0]->s) << endmsg;
-				return -1;
-			}
-			break;
-		case 'i':
-			marker = (uint32_t) argv[0]->i - 1;
-			break;
-		case 'f':
-			marker = (uint32_t) argv[0]->f - 1;
-			break;
-		default:
-			return -1;
-			break;
-	}
-	std::vector<LocationMarker> lm;
-	// get Locations that are marks
-	for (Locations::LocationList::const_iterator l = ll.begin(); l != ll.end(); ++l) {
-		if ((*l)->is_mark ()) {
-			lm.push_back (LocationMarker((*l)->name(), (*l)->start_sample ()));
-		}
-	}
-	// sort them by position
-	LocationMarkerSort location_marker_sort;
-	std::sort (lm.begin(), lm.end(), location_marker_sort);
-	// go there
-	if (marker < lm.size()) {
-		session->request_locate (lm[marker].when, false, MustStop);
-		return 0;
-	}
-	// we were unable to deal with things
-	return -1;
 }
 
 int

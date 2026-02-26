@@ -716,8 +716,7 @@ AudioRegionView::reset_fade_in_shape_width (std::shared_ptr<AudioRegion> ar, sam
 	points.assign (list->size(), Duple());
 
 	for (x = list->begin(), pi = 0; x != list->end(); ++x, ++pi) {
-		const double p = (*x)->when.samples();
-		points[pi].x = (p * pwidth) / length;
+		points[pi].x = (*x)->when.scale (Temporal::ratio_t (pwidth, length)).samples();
 		points[pi].y = effective_height - ((*x)->value * (effective_height - 1.));
 	}
 
@@ -803,8 +802,8 @@ AudioRegionView::reset_fade_out_shape_width (std::shared_ptr<AudioRegion> ar, sa
 	points.assign (list->size(), Duple());
 
 	for (x = list->begin(), pi = 0; x != list->end(); ++x, ++pi) {
-		const double p = (*x)->when.samples();
-		points[pi].x = _pixel_width - pwidth + (pwidth * (p/length));
+		const double p = (*x)->when.scale(Temporal::ratio_t(pwidth, length)).samples();
+		points[pi].x = _pixel_width - pwidth + p;
 		points[pi].y = effective_height - ((*x)->value * (effective_height - 1.));
 	}
 
@@ -909,8 +908,7 @@ AudioRegionView::redraw_start_xfade_to (std::shared_ptr<AudioRegion> ar, samplec
 
 		for (x = inverse->begin(), pi = 0; x != inverse->end(); ++x, ++pi) {
 			ArdourCanvas::Duple& p (ipoints[pi]);
-			double pos = (*x)->when.samples();
-			p.x = (rect_width * (pos/length));
+			p.x = (*x)->when.scale(Temporal::ratio_t (rect_width, length)).samples();
 			p.y = effective_height - ((*x)->value * (effective_height));
 		}
 	}
@@ -1003,8 +1001,7 @@ AudioRegionView::redraw_end_xfade_to (std::shared_ptr<AudioRegion> ar, samplecnt
 
 		for (x = inverse->begin(), pi = 0; x != inverse->end(); ++x, ++pi) {
 			ArdourCanvas::Duple& p (ipoints[pi]);
-			const double pos = (*x)->when.samples();
-			p.x = (rect_width * (pos/length)) + rend;
+			p.x = rend + (*x)->when.scale (Temporal::ratio_t (rect_width, length)).samples();
 			p.y = effective_height - ((*x)->value * (effective_height));
 		}
 	}

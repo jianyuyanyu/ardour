@@ -1029,7 +1029,7 @@ Session::setup_click_state (const XMLNode* node)
 
 		for (uint32_t physport = 0; physport < 2; ++physport) {
 			if (outs.size() > physport) {
-				if (_click_io->add_port (outs[physport], this)) {
+				if (_click_io->add_port (outs[physport])) {
 					// relax, even though its an error
 				}
 			}
@@ -1070,7 +1070,7 @@ Session::auto_connect_io (std::shared_ptr<IO> io)
 			continue;
 		}
 
-		if (io->connect (p, connect_to, this)) {
+		if (io->connect (p, connect_to)) {
 			error << string_compose (_("cannot connect %1 output %2 to %3"), io->name(), n, connect_to) << endmsg;
 			break;
 		}
@@ -1163,8 +1163,8 @@ Session::add_monitor_section ()
 
 	try {
 		Glib::Threads::Mutex::Lock lm (AudioEngine::instance()->process_lock ());
-		r->input()->ensure_io (_master_out->output()->n_ports(), false, this);
-		r->output()->ensure_io (_master_out->output()->n_ports(), false, this);
+		r->input()->ensure_io (_master_out->output()->n_ports(), false);
+		r->output()->ensure_io (_master_out->output()->n_ports(), false);
 	} catch (...) {
 		error << _("Cannot create monitor section. 'Monitor' Port name is not unique.") << endmsg;
 		return;
@@ -1191,7 +1191,7 @@ Session::add_monitor_section ()
 		 * this, i think.
 		 */
 
-		_master_out->output()->disconnect (this);
+		_master_out->output()->disconnect ();
 
 		for (uint32_t n = 0; n < limit; ++n) {
 			std::shared_ptr<AudioPort> p = _monitor_out->input()->ports()->nth_audio_port (n);
@@ -1199,7 +1199,7 @@ Session::add_monitor_section ()
 
 			if (o) {
 				string connect_to = o->name();
-				if (_monitor_out->input()->connect (p, connect_to, this)) {
+				if (_monitor_out->input()->connect (p, connect_to)) {
 					error << string_compose (_("cannot connect control input %1 to %2"), n, connect_to)
 					      << endmsg;
 					break;
@@ -1237,7 +1237,7 @@ Session::auto_connect_monitor_bus ()
 		std::shared_ptr<Bundle> b = bundle_by_name (Config->get_monitor_bus_preferred_bundle());
 
 		if (b) {
-			_monitor_out->output()->connect_ports_to_bundle (b, true, this);
+			_monitor_out->output()->connect_ports_to_bundle (b, true);
 		} else {
 			warning << string_compose (_("The preferred I/O for the monitor bus (%1) cannot be found"),
 					Config->get_monitor_bus_preferred_bundle())
@@ -1268,7 +1268,7 @@ Session::auto_connect_monitor_bus ()
 				}
 
 				if (!connect_to.empty()) {
-					if (_monitor_out->output()->connect (p, connect_to, this)) {
+					if (_monitor_out->output()->connect (p, connect_to)) {
 						error << string_compose (
 								_("cannot connect control output %1 to %2"),
 								n, connect_to)
@@ -1330,15 +1330,15 @@ Session::reset_monitor_section ()
 	 * this, i think.
 	 */
 
-	_master_out->output()->disconnect (this);
-	_monitor_out->output()->disconnect (this);
+	_master_out->output()->disconnect ();
+	_monitor_out->output()->disconnect ();
 
 	// monitor section follow master bus - except midi
 	ChanCount mon_chn (_master_out->output()->n_ports());
 	mon_chn.set_midi (0);
 
-	_monitor_out->input()->ensure_io (mon_chn, false, this);
-	_monitor_out->output()->ensure_io (mon_chn, false, this);
+	_monitor_out->input()->ensure_io (mon_chn, false);
+	_monitor_out->output()->ensure_io (mon_chn, false);
 
 	for (uint32_t n = 0; n < limit; ++n) {
 		std::shared_ptr<AudioPort> p = _monitor_out->input()->ports()->nth_audio_port (n);
@@ -1346,7 +1346,7 @@ Session::reset_monitor_section ()
 
 		if (o) {
 			string connect_to = o->name();
-			if (_monitor_out->input()->connect (p, connect_to, this)) {
+			if (_monitor_out->input()->connect (p, connect_to)) {
 				error << string_compose (_("cannot connect control input %1 to %2"), n, connect_to)
 				      << endmsg;
 				break;
@@ -1363,7 +1363,7 @@ Session::reset_monitor_section ()
 			std::shared_ptr<Bundle> b = bundle_by_name (Config->get_monitor_bus_preferred_bundle());
 
 			if (b) {
-				_monitor_out->output()->connect_ports_to_bundle (b, true, this);
+				_monitor_out->output()->connect_ports_to_bundle (b, true);
 			} else {
 				warning << string_compose (_("The preferred I/O for the monitor bus (%1) cannot be found"),
 							   Config->get_monitor_bus_preferred_bundle())
@@ -1394,7 +1394,7 @@ Session::reset_monitor_section ()
 					}
 
 					if (!connect_to.empty()) {
-						if (_monitor_out->output()->connect (p, connect_to, this)) {
+						if (_monitor_out->output()->connect (p, connect_to)) {
 							error << string_compose (
 								_("cannot connect control output %1 to %2"),
 								n, connect_to)
@@ -1527,8 +1527,8 @@ Session::add_surround_master ()
 
 	try {
 		Glib::Threads::Mutex::Lock lm (AudioEngine::instance()->process_lock ());
-		r->input()->ensure_io (ChanCount (), false, this);
-		r->output()->ensure_io (ChanCount (DataType::AUDIO, 16), false, this);
+		r->input()->ensure_io (ChanCount (), false);
+		r->output()->ensure_io (ChanCount (DataType::AUDIO, 16), false);
 	} catch (...) {
 		error << _("Cannot create surround master. 'Surround' Port name is not unique.") << endmsg;
 		return;
@@ -1565,7 +1565,7 @@ Session::auto_connect_surround_master ()
 	for (uint32_t n = 12, p = 0; n < limit && outputs.size () > p; ++n, ++p) {
 		std::shared_ptr<AudioPort> ap = io->audio (n);
 
-		if (io->connect (ap, outputs[p], this)) {
+		if (io->connect (ap, outputs[p])) {
 			error << string_compose (_("cannot connect %1 output %2 to %3"), io->name(), n, outputs[p]) << endmsg;
 			break;
 		}
@@ -1621,8 +1621,8 @@ Session::add_master_bus (ChanCount const& count)
 
 	{
 		Glib::Threads::Mutex::Lock lm (AudioEngine::instance()->process_lock ());
-		r->input()->ensure_io (count, false, this);
-		r->output()->ensure_io (count, false, this);
+		r->input()->ensure_io (count, false);
+		r->output()->ensure_io (count, false);
 	}
 
 	rl.push_back (r);
@@ -2788,12 +2788,12 @@ Session::new_midi_track (const ChanCount& input, const ChanCount& output, bool s
 
 			{
 				Glib::Threads::Mutex::Lock lm (AudioEngine::instance()->process_lock ());
-				if (track->input()->ensure_io (input, false, this)) {
+				if (track->input()->ensure_io (input, false )) {
 					error << "cannot configure " << input << " out configuration for new midi track" << endmsg;
 					goto failed;
 				}
 
-				if (track->output()->ensure_io (output, false, this)) {
+				if (track->output()->ensure_io (output, false)) {
 					error << "cannot configure " << output << " out configuration for new midi track" << endmsg;
 					goto failed;
 				}
@@ -2873,13 +2873,13 @@ Session::new_midi_route (std::shared_ptr<RouteGroup> route_group, uint32_t how_m
 			{
 				Glib::Threads::Mutex::Lock lm (AudioEngine::instance()->process_lock ());
 
-				if (bus->input()->ensure_io (ChanCount(DataType::MIDI, 1), false, this)) {
+				if (bus->input()->ensure_io (ChanCount(DataType::MIDI, 1), false)) {
 					error << _("cannot configure new midi bus input") << endmsg;
 					goto failure;
 				}
 
 
-				if (bus->output()->ensure_io (ChanCount(DataType::MIDI, 1), false, this)) {
+				if (bus->output()->ensure_io (ChanCount(DataType::MIDI, 1), false)) {
 					error << _("cannot configure new midi bus output") << endmsg;
 					goto failure;
 				}
@@ -2925,7 +2925,7 @@ Session::new_midi_route (std::shared_ptr<RouteGroup> route_group, uint32_t how_m
 
 
 void
-Session::midi_output_change_handler (IOChange change, void * /*src*/, std::weak_ptr<Route> wr)
+Session::midi_output_change_handler (IOChange change, std::weak_ptr<Route> wr)
 {
 	std::shared_ptr<Route> midi_route (wr.lock());
 
@@ -3051,7 +3051,7 @@ Session::new_audio_routes_tracks_bulk (RouteList& routes, AudioTrackList& tracks
 			{
 				Glib::Threads::Mutex::Lock lm (AudioEngine::instance()->process_lock ());
 
-				if (track->input()->ensure_io (ChanCount(DataType::AUDIO, input_channels), false, this)) {
+				if (track->input()->ensure_io (ChanCount(DataType::AUDIO, input_channels), false)) {
 					error << string_compose (
 						_("cannot configure %1 in/%2 out configuration for new audio track"),
 						input_channels, output_channels)
@@ -3059,7 +3059,7 @@ Session::new_audio_routes_tracks_bulk (RouteList& routes, AudioTrackList& tracks
 					goto failed;
 				}
 
-				if (track->output()->ensure_io (ChanCount(DataType::AUDIO, output_channels), false, this)) {
+				if (track->output()->ensure_io (ChanCount(DataType::AUDIO, output_channels), false)) {
 					error << string_compose (
 						_("cannot configure %1 in/%2 out configuration for new audio track"),
 						input_channels, output_channels)
@@ -3166,7 +3166,7 @@ Session::new_audio_route (int input_channels, int output_channels, std::shared_p
 			{
 				Glib::Threads::Mutex::Lock lm (AudioEngine::instance()->process_lock ());
 
-				if (bus->input()->ensure_io (ChanCount(DataType::AUDIO, input_channels), false, this)) {
+				if (bus->input()->ensure_io (ChanCount(DataType::AUDIO, input_channels), false)) {
 					error << string_compose (_("cannot configure %1 in/%2 out configuration for new audio track"),
 								 input_channels, output_channels)
 					      << endmsg;
@@ -3174,7 +3174,7 @@ Session::new_audio_route (int input_channels, int output_channels, std::shared_p
 				}
 
 
-				if (bus->output()->ensure_io (ChanCount(DataType::AUDIO, output_channels), false, this)) {
+				if (bus->output()->ensure_io (ChanCount(DataType::AUDIO, output_channels), false)) {
 					error << string_compose (_("cannot configure %1 in/%2 out configuration for new audio track"),
 								 input_channels, output_channels)
 					      << endmsg;
@@ -3453,9 +3453,9 @@ Session::new_route_from_template (uint32_t how_many, PresentationInfo::order_t i
 
 				IOChange change (IOChange::Type (IOChange::ConfigurationChanged | IOChange::ConnectionsChanged));
 				change.after = route->input()->n_ports();
-				route->input()->changed (change, this);
+				route->input()->changed (change);
 				change.after = route->output()->n_ports();
-				route->output()->changed (change, this);
+				route->output()->changed (change);
 			}
 
 			ret.push_back (route);
@@ -3731,7 +3731,7 @@ Session::load_and_connect_instruments (RouteList& new_routes, bool strict_io, st
 		}
 	}
 	for (RouteList::iterator r = new_routes.begin(); r != new_routes.end(); ++r) {
-		(*r)->output()->changed.connect_same_thread (*this, std::bind (&Session::midi_output_change_handler, this, _1, _2, std::weak_ptr<Route>(*r)));
+		(*r)->output()->changed.connect_same_thread (*this, std::bind (&Session::midi_output_change_handler, this, _1, std::weak_ptr<Route>(*r)));
 	}
 }
 
@@ -3874,8 +3874,8 @@ Session::remove_routes (std::shared_ptr<RouteList> routes_to_remove)
 
 			// We need to disconnect the route's inputs and outputs
 
-			(*iter)->input()->disconnect (0);
-			(*iter)->output()->disconnect (0);
+			(*iter)->input()->disconnect ();
+			(*iter)->output()->disconnect ();
 
 			if (!deletion_in_progress ()) {
 				Glib::Threads::Mutex::Lock lx (AudioEngine::instance()->process_lock (), Glib::Threads::NOT_LOCK);
@@ -7917,7 +7917,7 @@ Session::auto_connect (const AutoConnectRequest& ar)
 					port = physinputs[(in_offset.get(*t) + i) % nphysical_in];
 				}
 
-				if (!port.empty() && route->input()->connect (route->input()->ports()->port(*t, i), port, this)) {
+				if (!port.empty() && route->input()->connect (route->input()->ports()->port(*t, i), port)) {
 					DEBUG_TRACE (DEBUG::PortConnectAuto, "Failed to auto-connect input.");
 					break;
 				}
@@ -7943,7 +7943,7 @@ Session::auto_connect (const AutoConnectRequest& ar)
 					}
 				}
 
-				if (!port.empty() && route->output()->connect (route->output()->ports()->port(*t, i), port, this)) {
+				if (!port.empty() && route->output()->connect (route->output()->ports()->port(*t, i), port)) {
 					DEBUG_TRACE (DEBUG::PortConnectAuto, "Failed to auto-connect output.");
 					break;
 				}

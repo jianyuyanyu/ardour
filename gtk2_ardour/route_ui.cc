@@ -1890,13 +1890,13 @@ RouteUI::denormal_protection_changed ()
 void
 RouteUI::disconnect_input ()
 {
-	_route->input()->disconnect (this);
+	_route->input()->disconnect ();
 }
 
 void
 RouteUI::disconnect_output ()
 {
-	_route->output()->disconnect (this);
+	_route->output()->disconnect ();
 }
 
 bool

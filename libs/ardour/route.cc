@@ -204,10 +204,10 @@ Route::init ()
 	_input.reset (new IO (_session, _name, IO::Input, _default_type));
 	_output.reset (new IO (_session, _name, IO::Output, _default_type));
 
-	_input->changed.connect_same_thread (*this, std::bind (&Route::input_change_handler, this, _1, _2));
+	_input->changed.connect_same_thread (*this, std::bind (&Route::input_change_handler, this, _1));
 	_input->PortCountChanging.connect_same_thread (*this, std::bind (&Route::input_port_count_changing, this, _1));
 
-	_output->changed.connect_same_thread (*this, std::bind (&Route::output_change_handler, this, _1, _2));
+	_output->changed.connect_same_thread (*this, std::bind (&Route::output_change_handler, this, _1));
 	_output->PortCountChanging.connect_same_thread (*this, std::bind (&Route::output_port_count_changing, this, _1));
 
 	/* add the amp/fader processor.
@@ -1210,7 +1210,7 @@ Route::add_processors (const ProcessorList& others, std::shared_ptr<Processor> b
 
 			if (pi && pi->has_sidechain ()) {
 				pi->update_sidechain_name ();
-				pi->sidechain_input ()->changed.connect_same_thread (*pi, std::bind (&Route::sidechain_change_handler, this, _1, _2));
+				pi->sidechain_input ()->changed.connect_same_thread (*pi, std::bind (&Route::sidechain_change_handler, this, _1));
 			}
 
 			if (other->active()) {
@@ -1225,7 +1225,7 @@ Route::add_processors (const ProcessorList& others, std::shared_ptr<Processor> b
 				send->SelfDestruct.connect_same_thread (*other,
 						std::bind (&Route::processor_selfdestruct, this, std::weak_ptr<Processor> (other)));
 				if (send->output()) {
-					send->output()->changed.connect_same_thread (*other, std::bind (&Route::output_change_handler, this, _1, _2));
+					send->output()->changed.connect_same_thread (*other, std::bind (&Route::output_change_handler, this, _1));
 				}
 			}
 
@@ -2430,7 +2430,7 @@ Route::add_remove_sidechain (std::shared_ptr<Processor> proc, bool add)
 
 	if (pi->has_sidechain ()) {
 		pi->reset_sidechain_map ();
-		pi->sidechain_input ()->changed.connect_same_thread (*pi, std::bind (&Route::sidechain_change_handler, this, _1, _2));
+		pi->sidechain_input ()->changed.connect_same_thread (*pi, std::bind (&Route::sidechain_change_handler, this, _1));
 	}
 
 	processors_changed (RouteProcessorChange ()); /* EMIT SIGNAL */
@@ -3264,7 +3264,7 @@ Route::import_state (const XMLNode& node, bool use_pbd_ids, bool processor_only)
 					}
 					/* subscribe to Sidechain IO changes */
 					if (pi && pi->has_sidechain ()) {
-						pi->sidechain_input ()->changed.connect_same_thread (*pi, std::bind (&Route::sidechain_change_handler, this, _1, _2));
+						pi->sidechain_input ()->changed.connect_same_thread (*pi, std::bind (&Route::sidechain_change_handler, this, _1));
 					}
 					new_processors.push_back (processor);
 					processor_state.add_child_copy (*child);
@@ -3637,7 +3637,7 @@ Route::set_processor_state (XMLNode const& node, int version, XMLProperty const*
 			std::shared_ptr<Send> send = std::dynamic_pointer_cast<Send> (processor);
 			send->SelfDestruct.connect_same_thread (*send, std::bind (&Route::processor_selfdestruct, this, std::weak_ptr<Processor> (processor)));
 			if (send->output()) {
-				send->output()->changed.connect_same_thread (*send, std::bind (&Route::output_change_handler, this, _1, _2));
+				send->output()->changed.connect_same_thread (*send, std::bind (&Route::output_change_handler, this, _1));
 			}
 
 		} else if (prop->value() == "sursend") {
@@ -3668,7 +3668,7 @@ Route::set_processor_state (XMLNode const& node, int version, XMLProperty const*
 
 		/* subscribe to Sidechain IO changes */
 		if (pi && pi->has_sidechain ()) {
-			pi->sidechain_input ()->changed.connect_same_thread (*pi, std::bind (&Route::sidechain_change_handler, this, _1, _2));
+			pi->sidechain_input ()->changed.connect_same_thread (*pi, std::bind (&Route::sidechain_change_handler, this, _1));
 		}
 
 		/* we have to note the monitor send here, otherwise a new one will be created
@@ -4095,7 +4095,7 @@ Route::realtime_handle_transport_stopped ()
 
 
 void
-Route::input_change_handler (IOChange change, void * /*src*/)
+Route::input_change_handler (IOChange change)
 {
 	if (_session.loading ()) {
 		return;
@@ -4178,7 +4178,7 @@ Route::input_change_handler (IOChange change, void * /*src*/)
 }
 
 void
-Route::output_change_handler (IOChange change, void * /*src*/)
+Route::output_change_handler (IOChange change)
 {
 	if (_initial_io_setup) {
 		return;
@@ -4252,13 +4252,13 @@ Route::output_change_handler (IOChange change, void * /*src*/)
 }
 
 void
-Route::sidechain_change_handler (IOChange change, void* src)
+Route::sidechain_change_handler (IOChange change)
 {
 	if (_initial_io_setup || _in_sidechain_setup) {
 		return;
 	}
 
-	input_change_handler (change, src);
+	input_change_handler (change);
 }
 
 uint32_t

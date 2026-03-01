@@ -177,7 +177,7 @@ private:
 
 	void panners_became_legal ();
 	PBD::ScopedConnection panner_legal_c;
-	void output_changed (IOChange, void*);
+	void output_changed (IOChange);
 
 	bool _no_panner_reset;
 	std::atomic<int> _midi_mute_mask;

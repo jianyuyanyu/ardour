@@ -6491,14 +6491,14 @@ OSC::cue_new_aux (string name, string dest_1, string dest_2, uint32_t count, lo_
 			if (atoi( dest_1.c_str())) {
 				dest_1 = string_compose ("system:playback_%1", dest_1);
 			}
-			r->output ()->connect (*(ports->begin()), dest_1, this);
+			r->output ()->connect (*(ports->begin()), dest_1);
 			if (count == 2) {
 				if (atoi( dest_2.c_str())) {
 					dest_2 = string_compose ("system:playback_%1", dest_2);
 				}
 				PortSet::iterator i = ports->begin();
 				++i;
-				r->output ()->connect (*(i), dest_2, this);
+				r->output ()->connect (*(i), dest_2);
 			}
 		}
 		cue_set ((uint32_t) -1, msg);
@@ -6548,12 +6548,12 @@ OSC::cue_connect_aux (std::string dest, lo_message msg)
 		std::shared_ptr<Route> rt = std::dynamic_pointer_cast<Route> (get_strip (sur->aux, get_address(msg)));
 		if (rt) {
 			if (dest.size()) {
-				rt->output()->disconnect (this);
+				rt->output()->disconnect ();
 				if (atoi( dest.c_str())) {
 					dest = string_compose ("system:playback_%1", dest);
 				}
 				std::shared_ptr<PortSet> ports = rt->output()->ports ();
-				rt->output ()->connect (*(ports->begin()), dest, this);
+				rt->output ()->connect (*(ports->begin()), dest);
 				session->set_dirty();
 				ret = 0;
 			}

@@ -226,8 +226,8 @@ RouteTimeAxisView::set_route (std::shared_ptr<Route> rt)
 	}
 
 	_route->meter_change.connect (*this, invalidator (*this), bind (&RouteTimeAxisView::meter_changed, this), gui_context());
-	_route->input()->changed.connect (*this, invalidator (*this), std::bind (&RouteTimeAxisView::io_changed, this, _1, _2), gui_context());
-	_route->output()->changed.connect (*this, invalidator (*this), std::bind (&RouteTimeAxisView::io_changed, this, _1, _2), gui_context());
+	_route->input()->changed.connect (*this, invalidator (*this), std::bind (&RouteTimeAxisView::io_changed, this, _1), gui_context());
+	_route->output()->changed.connect (*this, invalidator (*this), std::bind (&RouteTimeAxisView::io_changed, this, _1), gui_context());
 	_route->track_number_changed.connect (*this, invalidator (*this), std::bind (&RouteTimeAxisView::label_view, this), gui_context());
 
 	if (ARDOUR::Profile->get_mixbus()) {
@@ -2388,7 +2388,7 @@ RouteTimeAxisView::meter_changed ()
 }
 
 void
-RouteTimeAxisView::io_changed (IOChange /*change*/, void */*src*/)
+RouteTimeAxisView::io_changed (IOChange /*change*/)
 {
 	reset_meter ();
 	if (_route && !no_redraw && !_session->routes_deletion_in_progress ()) {

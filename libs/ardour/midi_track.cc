@@ -116,7 +116,7 @@ MidiTrack::init ()
 	_velocity_control.reset (new VelocityControl (_session));
 	add_control (_velocity_control);
 
-	_input->changed.connect_same_thread (*this, std::bind (&MidiTrack::track_input_active, this, _1, _2));
+	_input->changed.connect_same_thread (*this, std::bind (&MidiTrack::track_input_active, this, _1));
 
 	_disk_writer->set_note_mode (_note_mode);
 	_disk_reader->reset_tracker ();
@@ -907,7 +907,7 @@ MidiTrack::map_input_active (bool yn)
 }
 
 void
-MidiTrack::track_input_active (IOChange change, void* /* src */)
+MidiTrack::track_input_active (IOChange change)
 {
 	if (change.type & IOChange::ConfigurationChanged) {
 		map_input_active (_input_active);
@@ -1005,7 +1005,7 @@ MidiTrack::playlist_contents_changed ()
 }
 
 void
-MidiTrack::input_change_handler (IOChange change, void *src)
+MidiTrack::input_change_handler (IOChange change)
 {
 	note_connections.drop_connections ();
 	_last_seen_external_midi_note = -1;
@@ -1017,7 +1017,7 @@ MidiTrack::input_change_handler (IOChange change, void *src)
 		}
 	}
 
-	Track::input_change_handler (change, src);
+	Track::input_change_handler (change);
 }
 
 void

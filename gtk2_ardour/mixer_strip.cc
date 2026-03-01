@@ -1916,13 +1916,13 @@ MixerStrip::override_rec_mon_visibility () const
 void
 MixerStrip::add_input_port (DataType t)
 {
-	_route->input()->add_port ("", this, t);
+	_route->input()->add_port ("", t);
 }
 
 void
 MixerStrip::add_output_port (DataType t)
 {
-	_route->output()->add_port ("", this, t);
+	_route->output()->add_port ("", t);
 }
 
 void

@@ -84,7 +84,7 @@ Auditioner::init ()
 		lookup_fallback_synth ();
 	}
 
-	_output->changed.connect_same_thread (*this, std::bind (&Auditioner::output_changed, this, _1, _2));
+	_output->changed.connect_same_thread (*this, std::bind (&Auditioner::output_changed, this, _1));
 
 	return 0;
 }
@@ -215,7 +215,7 @@ Auditioner::connect ()
 		}
 	}
 
-	_output->disconnect (this);
+	_output->disconnect ();
 
 	if (left.empty() && right.empty()) {
 		if (_output->n_ports().n_audio() == 0) {
@@ -231,11 +231,11 @@ Auditioner::connect ()
 			_main_outs->defer_pan_reset ();
 
 			if (left.length()) {
-				_output->add_port (left, this, DataType::AUDIO);
+				_output->add_port (left, DataType::AUDIO);
 			}
 
 			if (right.length()) {
-				_output->add_port (right, this, DataType::AUDIO);
+				_output->add_port (right, DataType::AUDIO);
 			}
 
 			_main_outs->allow_pan_reset ();
@@ -627,7 +627,7 @@ Auditioner::idle_synth_update ()
 }
 
 void
-Auditioner::output_changed (IOChange change, void* /*src*/)
+Auditioner::output_changed (IOChange change)
 {
 	if (0 == (change.type & IOChange::ConnectionsChanged)) {
 		return;

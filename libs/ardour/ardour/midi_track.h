@@ -157,7 +157,7 @@ protected:
 	void snapshot_out_of_band_data (samplecnt_t nframes);
 	void write_out_of_band_data (BufferSet& bufs, samplecnt_t /* nframes */) const;
 
-	void input_change_handler (IOChange, void *src);
+	void input_change_handler (IOChange);
 
 
 private:
@@ -183,7 +183,7 @@ private:
 	int no_roll_unlocked (pframes_t nframes, samplepos_t start_sample, samplepos_t end_sample, bool state_changing);
 	void push_midi_input_to_step_edit_ringbuffer (samplecnt_t nframes);
 
-	void track_input_active (IOChange, void*);
+	void track_input_active (IOChange);
 	void map_input_active (bool);
 
 	void data_recorded (std::weak_ptr<MidiSource> src);

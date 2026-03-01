@@ -134,7 +134,7 @@ private:
 	void unload_synth (bool);
 	static void*_drop_ports (void*);
 	void actually_drop_ports ();
-	void output_changed (IOChange, void*);
+	void output_changed (IOChange);
 	timepos_t _import_position;
 };
 

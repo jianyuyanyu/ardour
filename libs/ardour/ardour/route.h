@@ -712,7 +712,7 @@ protected:
 
 	SlavableAutomationControlList slavables () const;
 
-	virtual void input_change_handler (IOChange, void *src);
+	virtual void input_change_handler (IOChange);
 
 private:
 	/* no copy construction */
@@ -721,8 +721,8 @@ private:
 	int set_state_2X (const XMLNode&, int);
 	void set_processor_state_2X (XMLNodeList const &, int);
 
-	void output_change_handler (IOChange, void *src);
-	void sidechain_change_handler (IOChange, void *src);
+	void output_change_handler (IOChange);
+	void sidechain_change_handler (IOChange);
 
 	void processor_selfdestruct (std::weak_ptr<Processor>);
 	std::vector<std::weak_ptr<Processor> > selfdestruct_sequence;

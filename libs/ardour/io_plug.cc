@@ -442,10 +442,10 @@ IOPlug::ensure_io ()
 	PBD::Unwinder<bool> uw (_configuring_io, true);
 
 	/* must be called with process-lock held */
-	if (_input->ensure_io (_n_in, false, this) != 0) {
+	if (_input->ensure_io (_n_in, false) != 0) {
 		return false;
 	}
-	if (_output->ensure_io (_n_out, false, this) != 0) {
+	if (_output->ensure_io (_n_out, false) != 0) {
 		return false;
 	}
 

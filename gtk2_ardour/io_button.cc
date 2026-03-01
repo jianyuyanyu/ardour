@@ -515,22 +515,22 @@ void
 IOButton::bundle_chosen (std::shared_ptr<ARDOUR::Bundle> c)
 {
 	if (_input) {
-		_route->input ()->connect_ports_to_bundle (c, true, this);
+		_route->input ()->connect_ports_to_bundle (c, true);
 	} else {
-		_route->output ()->connect_ports_to_bundle (c, true, true, this);
+		_route->output ()->connect_ports_to_bundle (c, true, true);
 	}
 }
 
 void
 IOButton::disconnect ()
 {
-	io ()->disconnect (this);
+	io ()->disconnect ();
 }
 
 void
 IOButton::add_port (DataType t)
 {
-	if (io ()->add_port ("", this, t) != 0) {
+	if (io ()->add_port ("", t) != 0) {
 		ArdourMessageDialog msg (_("It is not possible to add a port here."));
 		msg.set_title (_("Cannot add port"));
 		msg.run ();

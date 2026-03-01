@@ -1054,7 +1054,7 @@ Mixer_UI::fan_out (std::weak_ptr<Route> wr, bool to_busses, bool group)
 		outputs = std::max (outputs, _session->master_out ()->n_inputs ().n_audio ());
 	}
 
-	route->output ()->disconnect (this);
+	route->output ()->disconnect ();
 	route->panner_shell ()->set_bypassed (true);
 
 	std::shared_ptr<AutomationControl> msac = route->master_send_enable_controllable ();

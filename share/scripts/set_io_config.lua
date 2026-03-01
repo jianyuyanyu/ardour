@@ -45,7 +45,7 @@ return function()
 			local to_add = target_in - nbr_iports
 			print (" - Add", to_add,  "inputs")
 			for n = 1, to_add do
-				i:add_port ("", nil, ARDOUR.DataType ("Audio"))
+				i:add_port ("", ARDOUR.DataType ("Audio"))
 			end
 		end
 
@@ -53,7 +53,7 @@ return function()
 			for n = nbr_iports, target_in, -1 do
 				print (" - Remove Input", n)
 				if not i:nth(n):isnil() then
-					i:remove_port (i:nth(n), nil)
+					i:remove_port (i:nth(n))
 				end
 			end
 		end
@@ -66,7 +66,7 @@ return function()
 			local to_add = target_out - nbr_oports
 			print (" - Add", to_add,  "outputs")
 			for n = 1, to_add do
-				o:add_port ("", nil, ARDOUR.DataType ("Audio"))
+				o:add_port ("", ARDOUR.DataType ("Audio"))
 			end
 		end
 
@@ -74,7 +74,7 @@ return function()
 			for n = nbr_iports - 1, target_out, -1 do
 				if not o:nth(n):isnil() then
 					print (" - Remove Output", n)
-					o:remove_port (o:nth(n), nil)
+					o:remove_port (o:nth(n))
 				end
 			end
 		end

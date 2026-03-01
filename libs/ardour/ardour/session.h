@@ -1995,7 +1995,7 @@ private:
 	bool find_route_name (std::string const &, uint32_t& id, std::string& name, bool);
 	void count_existing_track_channels (ChanCount& in, ChanCount& out);
 	void auto_connect_route (std::shared_ptr<Route>, bool, bool, const ChanCount&, const ChanCount&, const ChanCount& io = ChanCount(), const ChanCount& oo = ChanCount());
-	void midi_output_change_handler (IOChange change, void* /*src*/, std::weak_ptr<Route> midi_track);
+	void midi_output_change_handler (IOChange change, std::weak_ptr<Route> midi_track);
 
 	/* track numbering */
 

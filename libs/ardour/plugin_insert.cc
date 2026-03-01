@@ -247,10 +247,10 @@ PluginInsert::add_sidechain (uint32_t n_audio, uint32_t n_midi)
 	_sidechain.reset (new SideChain (_session, n.str ()));
 	_sidechain->activate ();
 	for (uint32_t n = 0; n < n_audio; ++n) {
-		_sidechain->input()->add_port ("", owner(), DataType::AUDIO); // add a port, don't connect.
+		_sidechain->input()->add_port ("", DataType::AUDIO); // add a port, don't connect.
 	}
 	for (uint32_t n = 0; n < n_midi; ++n) {
-		_sidechain->input()->add_port ("", owner(), DataType::MIDI); // add a port, don't connect.
+		_sidechain->input()->add_port ("", DataType::MIDI); // add a port, don't connect.
 	}
 	PluginConfigChanged (); /* EMIT SIGNAL */
 	return true;

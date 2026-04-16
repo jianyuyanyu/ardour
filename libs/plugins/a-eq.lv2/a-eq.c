@@ -22,11 +22,22 @@
 #endif
 
 #include <math.h>
-#include <complex.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
+
+#if !(defined COMPILER_MSVC && defined WAF_BUILD)
+#include <complex.h>
+#else
+#include <complex>
+typedef std::complex<double> _dcomplex;
+#define complex ; _dcomplex //Turns double complex to double ; _dcomplex, which works for MSVC.
+#undef  I //Avoid ODR error
+#define I _dcomplex(0.0, 1.0)
+#define cexp std::exp //cexp and cabs identifiers weren't found, so define here
+#define cabs std::abs
+#endif
 
 #ifdef COMPILER_MSVC
 #include <float.h>

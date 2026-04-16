@@ -34,6 +34,11 @@
 #include <ytkmm/spinbutton.h>
 #include <ytkmm/comboboxtext.h>
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#define _WINSOCKAPI_
+#endif
+
 #include "gtkmm2ext/gtk_ui.h"
 #include "gtkmm2ext/gui_thread.h"
 #include "gtkmm2ext/utils.h"

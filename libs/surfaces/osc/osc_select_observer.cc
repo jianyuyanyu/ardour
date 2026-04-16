@@ -21,6 +21,11 @@
 #include <vector>
 #include "pbd/control_math.h"
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#define _WINSOCKAPI_
+#endif
+
 #include "ardour/session.h"
 #include "ardour/track.h"
 #include "ardour/monitor_control.h"

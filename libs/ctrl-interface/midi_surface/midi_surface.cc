@@ -18,6 +18,10 @@
 
 #include <regex>
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#endif
+
 #include "pbd/debug.h"
 #include "pbd/i18n.h"
 

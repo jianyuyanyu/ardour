@@ -28,6 +28,11 @@
 #include "pbd/stl_delete.h"
 #include "pbd/replace_all.h"
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#define _WINSOCKAPI_
+#endif
+
 #include "ardour/filesystem_paths.h"
 
 #include "us2400_control_protocol.h"

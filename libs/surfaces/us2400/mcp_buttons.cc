@@ -20,6 +20,11 @@
 
 #include "pbd/memento_command.h"
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#define _WINSOCKAPI_
+#endif
+
 #include "ardour/debug.h"
 #include "ardour/profile.h"
 #include "ardour/session.h"

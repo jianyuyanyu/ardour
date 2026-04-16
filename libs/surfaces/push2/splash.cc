@@ -23,6 +23,10 @@
 #include "pbd/file_utils.h"
 #include "pbd/search_path.h"
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#endif
+
 #include "ardour/debug.h"
 #include "ardour/filesystem_paths.h"
 

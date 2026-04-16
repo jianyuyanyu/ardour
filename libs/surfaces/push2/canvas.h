@@ -21,6 +21,10 @@
 
 #include <cairomm/refptr.h>
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#endif
+
 #include "canvas/canvas.h"
 
 namespace Cairo {

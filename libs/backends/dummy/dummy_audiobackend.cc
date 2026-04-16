@@ -24,6 +24,10 @@
 
 #include <glibmm.h>
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#endif
+
 #ifdef PLATFORM_WINDOWS
 #include <windows.h>
 #include <pbd/windows_timer_utils.h>

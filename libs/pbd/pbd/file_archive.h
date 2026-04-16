@@ -20,6 +20,10 @@
 
 #include <atomic>
 
+#if defined(COMPILER_MSVC) && defined(WAF_BUILD)
+#include <winsock2.h> /*Not needed for file_archive itself, but prevents archive_entry.h from including winsock.h. */
+#endif
+
 #include <archive.h>
 #include <archive_entry.h>
 #include <pthread.h>

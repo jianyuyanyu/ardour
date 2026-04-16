@@ -19,6 +19,11 @@
 #include <ytkmm/label.h>
 #include <ytkmm/treemodelsort.h>
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#define _WINSOCKAPI_
+#endif
+
 #include "gtkmm2ext/bindings.h"
 #include "gtkmm2ext/gui_thread.h"
 #include "gtkmm2ext/actions.h"

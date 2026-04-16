@@ -20,6 +20,11 @@
 #include "pbd/failed_constructor.h"
 #include "pbd/error.h"
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#define _WINSOCKAPI_
+#endif
+
 #include "ardour/session.h"
 #include "control_protocol/control_protocol.h"
 

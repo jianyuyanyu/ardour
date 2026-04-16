@@ -36,6 +36,11 @@
 
 #include <glibmm/miscutils.h>
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#define _WINSOCKAPI_
+#endif
+
 #include "midi++/types.h"
 #include "midi++/port.h"
 #include "midi++/ipmidi_port.h"

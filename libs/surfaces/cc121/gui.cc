@@ -25,6 +25,11 @@
 #include "pbd/strsplit.h"
 #include "pbd/file_utils.h"
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#define _WINSOCKAPI_
+#endif
+
 #include "gtkmm2ext/actions.h"
 #include "gtkmm2ext/action_model.h"
 #include "gtkmm2ext/bindings.h"

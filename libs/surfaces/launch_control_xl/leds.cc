@@ -19,6 +19,11 @@
 
 #include <algorithm>
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#define _WINSOCKAPI_
+#endif
+
 #include "launch_control_xl.h"
 #include "pbd/compose.h"
 #include "pbd/convert.h"

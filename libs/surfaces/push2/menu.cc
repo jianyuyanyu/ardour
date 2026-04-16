@@ -22,6 +22,10 @@
 #include <cairomm/region.h>
 #include <pangomm/layout.h>
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#endif
+
 #include "canvas/text.h"
 #include "canvas/types.h"
 #include "canvas/rectangle.h"

@@ -22,6 +22,10 @@
 #include "pbd/control_math.h"
 #include <glibmm.h>
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#define _WINSOCKAPI_
+#endif
 
 #include "ardour/session.h"
 #include "ardour/track.h"

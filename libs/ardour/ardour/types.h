@@ -43,6 +43,16 @@
 
 #include <inttypes.h>
 
+#if defined _MSC_VER
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+
+#ifndef _WINSOCKAPI_
+#define _WINSOCKAPI_
+#endif
+#endif
+
 #include "temporal/bbt_time.h"
 #include "temporal/range.h"
 #include "temporal/superclock.h"

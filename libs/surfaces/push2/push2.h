@@ -25,7 +25,8 @@
 #include <list>
 #include <set>
 
-#ifdef COMPILER_MSVC
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
 #define _WINSOCKAPI_
 #endif
 

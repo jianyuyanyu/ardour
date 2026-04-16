@@ -18,6 +18,11 @@
 
 #include <cmath>
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#define _WINSOCKAPI_
+#endif
+
 #include "ardour/session.h"
 
 #include "jog_wheel.h"

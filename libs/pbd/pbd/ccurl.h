@@ -18,6 +18,10 @@
 
 #pragma once
 
+#if defined(COMPILER_MSVC) && defined(WAF_BUILD)
+#undef _WINSOCKAPI_
+#endif
+
 #include <curl/curl.h>
 
 #include "pbd/libpbd_visibility.h"

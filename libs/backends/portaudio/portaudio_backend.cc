@@ -18,6 +18,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#endif
+
 #ifndef PLATFORM_WINDOWS
 # include <sys/mman.h>
 # include <sys/time.h>

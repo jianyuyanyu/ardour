@@ -30,6 +30,10 @@
 
 #include "midi++/parser.h"
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#endif
+
 #include "temporal/time.h"
 #include "temporal/bbt_time.h"
 

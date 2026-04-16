@@ -25,6 +25,10 @@
 #include <ytkmm/stock.h>
 #include <ytkmm/table.h>
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#endif
+
 #include "gtkmm2ext/actions.h"
 #include "gtkmm2ext/gtk_ui.h"
 #include "gtkmm2ext/utils.h"

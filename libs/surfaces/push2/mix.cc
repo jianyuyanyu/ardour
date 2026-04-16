@@ -28,6 +28,11 @@
 #include "pbd/search_path.h"
 #include "pbd/enumwriter.h"
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#define _WINSOCKAPI_
+#endif
+
 #include "midi++/parser.h"
 
 #include "temporal/time.h"

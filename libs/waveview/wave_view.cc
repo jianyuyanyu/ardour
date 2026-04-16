@@ -24,6 +24,10 @@
 
 #include <ydkmm/general.h>
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#endif
+
 #include "pbd/base_ui.h"
 #include "pbd/compose.h"
 #include "pbd/convert.h"

@@ -26,6 +26,10 @@
 
 #include <glibmm/main.h>
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#endif
+
 #define ABSTRACT_UI_EXPORTS
 #include "pbd/abstract_ui.h"
 #include "ardour/types.h"

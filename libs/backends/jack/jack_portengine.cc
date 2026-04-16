@@ -23,6 +23,10 @@
 
 #include "pbd/error.h"
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#define NOMINMAX
+#endif
+
 #include "jack_audiobackend.h"
 #include "jack_connection.h"
 

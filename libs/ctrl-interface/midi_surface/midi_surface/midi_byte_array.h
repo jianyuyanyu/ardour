@@ -21,6 +21,8 @@
 #include <iostream>
 #include <vector>
 
+#include "control_protocol/visibility.h"
+
 //#include <midi++/types.h>
 namespace MIDI {
 	typedef unsigned char byte;
@@ -43,7 +45,7 @@ namespace MIDI {
 
 	will all result in "f0 00 f7" being output to stdout
 */
-class MidiByteArray : public std::vector<MIDI::byte>
+class ARDOURSURFACE_API MidiByteArray : public std::vector<MIDI::byte>
 {
 public:
 	MidiByteArray () : std::vector<MIDI::byte>() {};

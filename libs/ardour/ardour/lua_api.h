@@ -292,7 +292,7 @@ namespace ARDOUR { namespace LuaAPI {
 	 * @param timeout_ms wait at most this many milliseconds
 	 * @return true on success,  false if timeout was reached or engine was not running
 	 */
-	bool wait_for_process_callback (size_t n_cycles, int64_t timeout_ms);
+	LIBARDOUR_API bool wait_for_process_callback (size_t n_cycles, int64_t timeout_ms);
 
 	/** Crash Test Dummy */
 	void segfault ();

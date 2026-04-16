@@ -41,7 +41,7 @@ struct MidiSurfaceRequest : public BaseUI::BaseRequestObject {
 	~MidiSurfaceRequest () {}
 };
 
-class MIDISurface : public ARDOUR::ControlProtocol
+class ARDOURSURFACE_API MIDISurface : public ARDOUR::ControlProtocol
                   , public AbstractUI<MidiSurfaceRequest>
 {
   public:

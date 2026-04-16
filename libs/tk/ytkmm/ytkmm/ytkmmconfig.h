@@ -22,6 +22,10 @@
 #  endif
 # endif
 
+#ifdef COMPILER_MSVC
+#define _WINDLL
+#endif
+
 #ifdef GTKMM_DLL
 # if defined(GTKMM_BUILD) && defined(_WINDLL)
    /* GTKMM_API was previously undefined here.  It was getting handled  */

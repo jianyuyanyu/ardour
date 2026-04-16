@@ -22,9 +22,7 @@
 #include <cstring>
 
 #ifdef PLATFORM_WINDOWS
-#include <windows.h>
 #include <glibmm.h>
-#include "pbd/windows_special_dirs.h"
 #else
 #include <sys/utsname.h>
 #endif

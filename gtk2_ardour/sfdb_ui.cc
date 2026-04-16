@@ -30,10 +30,6 @@
 #include "gtk2ardour-config.h"
 #endif
 
-#ifdef PLATFORM_WINDOWS
-#include <windows.h>
-#endif
-
 #include <map>
 #include <cerrno>
 #include <sstream>

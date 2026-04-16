@@ -29,7 +29,7 @@ def build(bld):
             'LOCALEDIR="' + os.path.join(autowaf.normpath(bld.env['DATADIR']), 'locale') + '"',
             ]
         obj.use = [ 'libpbd' ]
-        obj.uselib = 'GIOMM DL UUID ARCHIVE CURL XML'
+        obj.uselib = 'GLIBMM GIOMM DL UUID ARCHIVE CURL XML'
 
         if bld.is_defined('HAVE_USB'):
             obj.uselib += ' USB'
@@ -39,6 +39,9 @@ def build(bld):
         elif bld.env['build_target'] == 'mingw' or bld.env['build_target'] == 'msvc':
             obj.uselib += ' GDI32'
             obj.linkflags += bld.env['compiler_flags_dict']['mwindows']
+            if bld.env['build_target'] == 'msvc':
+                obj.lib = ['getopt', 'ole32']
+                obj.defines.append('LIBARDOUR_DLL_EXPORTS')
 
         if re.search ("bsd", sys.platform) != None:
             obj.defines.append('_POSIX_C_SOURCE=200809L')
@@ -53,10 +56,10 @@ def build(bld):
         obj.linkflags= [ bld.env['compiler_flags_dict']['execstack'] ]
         if bld.is_defined('WINDOWS_VST_SUPPORT'):
             bld (features = 'c', name='vstwin', source='vstwin.c', uselib = 'GIOMM', includes  = [ '../pbd/', '../ardour/', '.' ])
-            obj.uselib = ['GIOMM', 'DL', 'GDI32', 'ARCHIVE', 'CURL', 'XML']
+            obj.uselib = ['GLIBMM', 'GIOMM', 'DL', 'GDI32', 'ARCHIVE', 'CURL', 'XML']
             obj.use = [ 'libpbd', 'libtemporal', 'libevoral', 'vstwin' ]
         else:
-            obj.uselib = ['GIOMM', 'DL', 'OSX', 'ARCHIVE', 'CURL', 'XML' ]
+            obj.uselib = ['GLIBMM', 'GIOMM', 'DL', 'OSX', 'ARCHIVE', 'CURL', 'XML' ]
             obj.use = [ 'libpbd', 'libtemporal', 'libevoral' ]
 
         if bld.is_defined('HAVE_USB'):
@@ -66,6 +69,8 @@ def build(bld):
             pass
         elif bld.env['build_target'] == 'mingw' or bld.env['build_target'] == 'msvc':
             obj.linkflags += bld.env['compiler_flags_dict']['mwindows']
+            if bld.env['build_target'] == 'msvc':
+                obj.lib = ['getopt']
 
         obj.includes  = [ '../pbd/', '../ardour/', '.' ]
         obj.defines = [

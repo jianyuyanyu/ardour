@@ -18,7 +18,8 @@ def build(bld):
     # just the normal executable version of the GTK GUI
     obj = bld (features = 'cxx c cxxprogram')
     # this program does not do the whole hidden symbols thing
-    obj.cxxflags = [ '-fvisibility=default' ]
+    if bld.env['build_target'] != 'msvc':
+        obj.cxxflags = [ '-fvisibility=default' ]
     obj.source    = hardour_sources
     obj.target = 'hardour-' + bld.env['VERSION']
     obj.includes = ['.']
@@ -53,6 +54,9 @@ def build(bld):
     elif bld.env['build_target'] == 'mingw' or bld.env['build_target'] == 'msvc':
         if bld.env['DEBUG'] == False:
             obj.linkflags += bld.env['compiler_flags_dict']['mwindows']
+
+        if bld.env['build_target'] == 'msvc':
+            obj.lib = ['getopt']
 
     obj.includes += ['../libs']
 

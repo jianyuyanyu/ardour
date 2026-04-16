@@ -95,15 +95,15 @@ compiler_flags_dictionaries= {
     'msvc' : {
         'debuggable' : ['/DDEBUG', '/Od', '/Z7', '/MDd', '/Gd', '/EHsc', '/JMC'],
         'linker-debuggable' : ['/DEBUG', '/INCREMENTAL' ],
-        'nondebuggable' : ['/DNDEBUG', '/Ob1', '/MD', '/Gd', '/EHsc'],
+        'nondebuggable' : ['/DNDEBUG', '/Ob2', '/MD', '/Gd', '/EHsc'],
         'profile' : ['/Oy-'],
         'silence-unused-arguments' : '',
         'sse' : '',
         'xsaveintrin' : '',
         'fpmath-sse' : '',
-        'xmmintrinsics' : '',
+        'xmmintrinsics' : ['/DUSE_XMMINTRIN'],
         'pipe' : '',
-        'full-optimization' : ['/O2'],
+        'full-optimization' : ['/O2', '/Oi', '/Ot', '/fp:fast', '/GS-', '/Gy', '/Gw', '/GF', '/favor:blend'],
         'dsp-optimization' : ['/O2', '/fp:fast'],
         'no-frame-pointer' : '',
         'fast-math' : '',
@@ -489,8 +489,11 @@ int main() { return 0; }''',
 
     if compiler_name == 'msvc':
         compiler_flags.extend(['/nologo', '/FS', '/bigobj', '/FC',
-                               '/diagnostics:column', '/Zc:__cplusplus'])
-        linker_flags.extend(['/guard:cf'])
+                               '/diagnostics:column', '/Zc:__cplusplus',
+                               '/Zc:inline', '/Zc:throwingNew', '/cgthreads8'])
+        linker_flags.append('/guard:cf')
+        if not conf.env['DEBUG']:
+            linker_flags.append('/OPT:REF,ICF')
 
     autowaf.set_basic_compiler_flags (conf,flags_dict)
 
@@ -1641,8 +1644,16 @@ def build(bld):
         bld.recurse(i)
 
     if bld.env['build_target'] == 'msvc': #For using .def generator
-        for name in ['libydk-pixbuf', 'libydk', 'libytk']:
-            bld.get_tgen_by_name(name).features.append('gendef')
+        gendef_targets = ['libydk-pixbuf', 'libydk', 'libytk', 'libztkmm', 'libydkmm', 'libytkmm', 'libaaf']
+        if not Options.options.use_lld:
+            gendef_targets += ['libardourvampplugins', 'libardourvamppyin']
+
+        for name in gendef_targets:
+            tgen = bld.get_tgen_by_name(name) # Waf 'features' can be a list or a space separated string depending on the target
+            if isinstance(tgen.features, list):
+                tgen.features.append('gendef')
+            else:
+                tgen.features += ' gendef'
 
     if bld.is_defined ('BEATBOX'):
         bld.recurse('tools/bb')

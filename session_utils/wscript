@@ -21,7 +21,8 @@ def build_ardour_util(bld, util):
     # just the normal executable version of the GTK GUI
     obj = bld (features = 'cxx c cxxprogram')
     # this program does not do the whole hidden symbols thing
-    obj.cxxflags = [ '-fvisibility=default' ]
+    if bld.env['build_target'] != 'msvc':
+        obj.cxxflags = [ '-fvisibility=default' ]
     obj.source   = ['common.cc', util + '.cc' ]
     obj.target   = pgmprefix + '-' + util
     obj.includes = ['.']
@@ -54,6 +55,9 @@ def build_ardour_util(bld, util):
         obj.use    += ' libappleutility'
     elif bld.env['build_target'] == 'mingw' or bld.env['build_target'] == 'msvc':
         obj.linkflags += bld.env['compiler_flags_dict']['mconsole']
+
+        if bld.env['build_target'] == 'msvc':
+            obj.lib = ['getopt']
 
     obj.includes += ['../libs']
 

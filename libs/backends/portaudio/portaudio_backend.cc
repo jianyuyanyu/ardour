@@ -54,6 +54,10 @@
 
 #include "debug.h"
 
+#if defined COMPILER_MSVC && defined WAF_BUILD
+#include "pbd/msvc_gettimeofday.h"
+#endif
+
 using namespace ARDOUR;
 
 namespace {

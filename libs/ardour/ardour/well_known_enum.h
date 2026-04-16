@@ -70,6 +70,22 @@ enum WellKnownCtrl : int
 	Gate_Lookahead,
 	Gate_FastAttack,
 
+	DeEss_Enable,
+	DeEss_HiShelf,
+	DeEss_Threshold,
+	DeEss_Attack,
+	DeEss_EssDepth,
+	DeEss_EssFreq,
+	DeEss_EssSolo,
+	DeEss_HiDepth,
+	DeEss_HiFreq,
+	DeEss_HiSolo,
+
+	Denoise_Enable,
+	Denoise_Threshold,
+	Denoise_DepthLow,
+	Denoise_DepthHigh,
+
 	Master_Limiter_Enable,
 };
 
@@ -84,6 +100,12 @@ enum WellKnownData : int
 	Comp_Redux,
 	Gate_Meter,
 	Gate_Redux,
+	DeEss_Meter,
+	DeEss_EssRedux,
+	DeEss_HiRedux,
+	Denoise_Meter,
+	Denoise_ReduxLo,
+	Denoise_ReduxHi,
 };
 
 } /* namespace ARDOUR */

@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Ardour 8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-16 23:32+0200\n"
-"PO-Revision-Date: 2026-04-17 11:30+0200\n"
+"PO-Revision-Date: 2026-04-17 15:52+0200\n"
 "Last-Translator: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@lists.gnome.org>\n"
 "Language: ru\n"
@@ -15272,11 +15272,11 @@ msgstr "Порог (в тиках)"
 
 #: quantize_dialog.cc:85
 msgid "Snap note start"
-msgstr "Начало привязки ноты"
+msgstr "Начало"
 
 #: quantize_dialog.cc:86
 msgid "Snap note end"
-msgstr "Конец привязки ноты"
+msgstr "Конец"
 
 #: rc_option_editor.cc:101 rc_option_editor.cc:102 rc_option_editor.cc:1778
 msgid "Browse..."
@@ -18861,7 +18861,7 @@ msgstr "Панорама"
 
 #: route_time_axis.cc:661
 msgid "Scale..."
-msgstr ""
+msgstr "Гамма…"
 
 #: route_time_axis.cc:699
 msgid "Overlaid"
@@ -20181,55 +20181,55 @@ msgstr "32-bit floating point"
 
 #: scale_dialog.cc:39 scale_dialog.cc:86
 msgid "Absolute Pitch (Hz)"
-msgstr ""
+msgstr "Абсолютная высота тона (Hz)"
 
 #: scale_dialog.cc:40 scale_dialog.cc:87 scale_dialog.cc:93
 msgid "Semitone Steps"
-msgstr ""
+msgstr "Шаги в полутонах"
 
 #: scale_dialog.cc:41 scale_dialog.cc:88
 msgid "Whole Tone Steps"
-msgstr ""
+msgstr "Шаги в целых тонах"
 
 #: scale_dialog.cc:42 scale_dialog.cc:89
 msgid "Ratio steps"
-msgstr ""
+msgstr "Пропорциональные шаги"
 
 #: scale_dialog.cc:43 scale_dialog.cc:90
 msgid "Ratios from root"
-msgstr ""
+msgstr "Пропорции от основной ноты"
 
 #: scale_dialog.cc:44 scale_dialog.cc:91
 msgid "MIDI Note Numbers"
-msgstr ""
+msgstr "Номера MIDI-нот"
 
 #: scale_dialog.cc:54
 msgid "Scale Editor"
-msgstr ""
+msgstr "Редактор гаммы"
 
 #: scale_dialog.cc:59
 msgid "Pitches"
-msgstr ""
+msgstr "Высот тона:"
 
 #: scale_dialog.cc:61
 msgid "Load a Scala file"
-msgstr ""
+msgstr "Загрузить файл Scala"
 
 #: scale_dialog.cc:62
 msgid "Remove scale"
-msgstr ""
+msgstr "Удалить гамму"
 
 #: scale_dialog.cc:70
 msgid "Western Europe (12TET)"
-msgstr ""
+msgstr "Западноевропейская (12TET)"
 
 #: scale_dialog.cc:75
 msgid "SE Asian Archipelago"
-msgstr ""
+msgstr "Юго-восточная Азия, архипелаг"
 
 #: scale_dialog.cc:174
 msgid "A#"
-msgstr ""
+msgstr "A#"
 
 #: scale_dialog.cc:175 sfdb_ui.cc:1420
 msgid "B"
@@ -20241,7 +20241,7 @@ msgstr "C"
 
 #: scale_dialog.cc:177
 msgid "C#"
-msgstr ""
+msgstr "C#"
 
 #: scale_dialog.cc:178
 msgid "D"
@@ -20249,19 +20249,19 @@ msgstr "Диск"
 
 #: scale_dialog.cc:179
 msgid "D#"
-msgstr ""
+msgstr "D#"
 
 #: scale_dialog.cc:180
 msgid "E"
-msgstr ""
+msgstr "E"
 
 #: scale_dialog.cc:181
 msgid "F"
-msgstr ""
+msgstr "F"
 
 #: scale_dialog.cc:182
 msgid "F#"
-msgstr ""
+msgstr "F#"
 
 #: scale_dialog.cc:183
 msgid "G"
@@ -20269,7 +20269,7 @@ msgstr "Гр"
 
 #: scale_dialog.cc:184
 msgid "G#"
-msgstr ""
+msgstr "G#"
 
 #: scale_dialog.cc:188
 msgid "Major (Ionian)"

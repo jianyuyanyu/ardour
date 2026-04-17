@@ -778,8 +778,8 @@ LuaProc::connect_and_run (BufferSet& bufs,
 			lua_time["tc_fps"]       = _session.timecode_frames_per_second ();
 			lua_time["tc_dropframe"] = _session.timecode_drop_frames ();
 
-			if (_session.get_play_loop ()) {
-				Location* looploc = _session.locations ()->auto_loop_location ();
+			Location* looploc = _session.get_play_loop () ? _session.locations()->auto_loop_location () : NULL;
+			if (looploc) {
 				lua_time["looping"]         = true;
 				lua_time["loop_start"]      = looploc->start ().samples ();
 				lua_time["loop_end"]        = looploc->end ().samples ();

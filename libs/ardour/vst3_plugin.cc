@@ -746,7 +746,8 @@ VST3Plugin::connect_and_run (BufferSet&  bufs,
 		context.frameRate.flags = Vst::FrameRate::kPullDownRate; /* 23.976 etc */
 	}
 
-	if (_session.get_play_loop ()) {
+	Location* looploc = _session.get_play_loop () ? _session.locations()->auto_loop_location () : NULL;
+	if (looploc) {
 		Location* looploc = _session.locations ()->auto_loop_location ();
 		try {
 			/* loop start/end in quarter notes */

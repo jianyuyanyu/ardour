@@ -40,7 +40,7 @@
 #include "evoral/SMF.h"
 #include "evoral/midi_util.h"
 
-#ifdef COMPILER_MSVC
+#if defined COMPILER_MSVC && !defined WAF_BUILD
 extern double round(double x);
 #endif
 

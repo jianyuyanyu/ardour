@@ -25,7 +25,7 @@
 
 #include "pbd/libpbd_visibility.h"
 
-class LIBPBD_API Transmitter : public std::stringstream
+class /* LIBPBD_API */ Transmitter : public std::stringstream
 
 {
   public:
@@ -38,16 +38,16 @@ class LIBPBD_API Transmitter : public std::stringstream
 		Throw
 	};
 
-	Transmitter (Channel);
+	LIBPBD_API Transmitter (Channel);
 
 	PBD::Signal<void(Channel, const char *)> &sender() {
 		return *send;
 	}
 
-	bool does_not_return ();
+	LIBPBD_API bool does_not_return ();
 
   protected:
-	virtual void deliver ();
+	LIBPBD_API virtual void deliver ();
 	friend std::ostream& endmsg (std::ostream &);
 
   private:

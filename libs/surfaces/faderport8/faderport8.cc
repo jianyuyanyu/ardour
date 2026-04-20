@@ -1387,6 +1387,22 @@ FaderPort8::build_well_known_processor_ctrls (std::shared_ptr<Stripable> s, int 
 			PUSH_BACK_NON_NULL ("SC Enable", s->mapped_control (Gate_KeyFilterEnable));
 			PUSH_BACK_NON_NULL ("SC Freq", s->mapped_control (Gate_KeyFilterFreq));
 			break;
+		case 4:
+			PUSH_BACK_NON_NULL ("DeEss In", s->mapped_control (DeEss_Enable));
+			PUSH_BACK_NON_NULL ("Hi In", s->mapped_control (DeEss_HiShelf));
+			PUSH_BACK_NON_NULL ("Threshold", s->mapped_control (DeEss_Threshold));
+			PUSH_BACK_NON_NULL ("Attack", s->mapped_control (DeEss_Attack));
+			PUSH_BACK_NON_NULL ("Ess Depth", s->mapped_control (DeEss_EssDepth));
+			PUSH_BACK_NON_NULL ("Ess Freq", s->mapped_control (DeEss_EssFreq));
+			PUSH_BACK_NON_NULL ("Hi Depth", s->mapped_control (DeEss_HiDepth));
+			PUSH_BACK_NON_NULL ("Hi Freq", s->mapped_control (DeEss_HiFreq));
+			break;
+		case 5:
+			PUSH_BACK_NON_NULL ("DNoise In", s->mapped_control (Denoise_Enable));
+			PUSH_BACK_NON_NULL ("Threshold", s->mapped_control (Denoise_Threshold));
+			PUSH_BACK_NON_NULL ("Low Depth", s->mapped_control (Denoise_DepthLow));
+			PUSH_BACK_NON_NULL ("Hi DEpth", s->mapped_control (Denoise_DepthHigh));
+			break;
 		default:
 			assert (0);
 			break;
@@ -1450,6 +1466,16 @@ FaderPort8::select_plugin (int num)
 					break;
 				case Processor::MBEq:
 					if (num == -1) {
+						pi = std::dynamic_pointer_cast<PluginInsert> (proc);
+					}
+					break;
+				case Processor::MBDeEss:
+					if (num == -3) {
+						pi = std::dynamic_pointer_cast<PluginInsert> (proc);
+					}
+					break;
+				case Processor::MBDenoise:
+					if (num == -4) {
 						pi = std::dynamic_pointer_cast<PluginInsert> (proc);
 					}
 					break;
@@ -1613,6 +1639,8 @@ FaderPort8::spill_plugins ()
 	bool have_well_known_eq = false;
 	bool have_well_known_comp = false;
 	bool have_well_known_gate = false;
+	bool have_well_known_deess = false;
+	bool have_well_known_denoise = false;
 
 	// reserve last slot(s) for "well-known"
 	if (r->eq_band_cnt() > 0) {
@@ -1626,6 +1654,14 @@ FaderPort8::spill_plugins ()
 	if (r->mapped_control (Gate_Enable)) {
 		--spillwidth;
 		have_well_known_gate = true;
+	}
+	if (r->mapped_control (DeEss_Enable)) {
+		--spillwidth;
+		have_well_known_deess = true;
+	}
+	if (r->mapped_control (Denoise_Enable)) {
+		--spillwidth;
+		have_well_known_denoise = true;
 	}
 
 	if (n_plugins == 0 && !have_well_known_eq && !have_well_known_comp && !have_well_known_gate) {
@@ -1671,19 +1707,47 @@ FaderPort8::spill_plugins ()
 		_ctrls.strip(id).unset_controllables ();
 	}
 
-	if (have_well_known_gate) {
+	if (have_well_known_denoise) {
 			assert (id < N_STRIPS);
-		 std::function<void ()> cb (std::bind (&FaderPort8::select_plugin, this, -3));
+		 std::function<void ()> cb (std::bind (&FaderPort8::select_plugin, this, -5));
 		 _ctrls.strip(id).unset_controllables (FP8Strip::CTRL_ALL & ~FP8Strip::CTRL_TEXT & ~FP8Strip::CTRL_SELECT);
 		 _ctrls.strip(id).set_select_cb (cb);
 		 _ctrls.strip(id).select_button ().set_color (0xffff00ff);
 		 _ctrls.strip(id).select_button ().set_active (true);
 		 _ctrls.strip(id).select_button ().set_blinking (false);
-		 _ctrls.strip(id).set_text_line (0, "Gate");
+		 _ctrls.strip(id).set_text_line (0, "DeNoise");
 		 _ctrls.strip(id).set_text_line (1, "Built-In");
 		 _ctrls.strip(id).set_text_line (2, "--");
 		 _ctrls.strip(id).set_text_line (3, "");
 		 ++id;
+	}
+	if (have_well_known_gate) {
+		assert (id < N_STRIPS);
+		std::function<void ()> cb (std::bind (&FaderPort8::select_plugin, this, -3));
+		_ctrls.strip(id).unset_controllables (FP8Strip::CTRL_ALL & ~FP8Strip::CTRL_TEXT & ~FP8Strip::CTRL_SELECT);
+		_ctrls.strip(id).set_select_cb (cb);
+		_ctrls.strip(id).select_button ().set_color (0xffff00ff);
+		_ctrls.strip(id).select_button ().set_active (true);
+		_ctrls.strip(id).select_button ().set_blinking (false);
+		_ctrls.strip(id).set_text_line (0, "Gate");
+		_ctrls.strip(id).set_text_line (1, "Built-In");
+		_ctrls.strip(id).set_text_line (2, "--");
+		_ctrls.strip(id).set_text_line (3, "");
+		++id;
+	}
+	if (have_well_known_deess) {
+		assert (id < N_STRIPS);
+		std::function<void ()> cb (std::bind (&FaderPort8::select_plugin, this, -4));
+		_ctrls.strip(id).unset_controllables (FP8Strip::CTRL_ALL & ~FP8Strip::CTRL_TEXT & ~FP8Strip::CTRL_SELECT);
+		_ctrls.strip(id).set_select_cb (cb);
+		_ctrls.strip(id).select_button ().set_color (0xffff00ff);
+		_ctrls.strip(id).select_button ().set_active (true);
+		_ctrls.strip(id).select_button ().set_blinking (false);
+		_ctrls.strip(id).set_text_line (0, "DeEss");
+		_ctrls.strip(id).set_text_line (1, "Built-In");
+		_ctrls.strip(id).set_text_line (2, "--");
+		_ctrls.strip(id).set_text_line (3, "");
+		++id;
 	}
 	if (have_well_known_eq) {
 			assert (id < N_STRIPS);

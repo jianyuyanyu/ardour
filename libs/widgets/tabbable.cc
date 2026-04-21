@@ -586,8 +586,14 @@ void
 Tabbable::showhide_att_bottom (bool yn)
 {
 	if (yn) {
+		if (!(_panelayout & PaneBottom)) {
+			content_att_bottom.get_parent()->show ();
+		}
 		content_att_bottom.show ();
 	} else {
+		if (!(_panelayout & PaneBottom)) {
+			content_att_bottom.get_parent()->hide ();
+		}
 		content_att_bottom.hide ();
 	}
 

@@ -79,7 +79,7 @@ ProcessorUIFrame::ProcessorUIFrame (std::shared_ptr<Route> r, std::shared_ptr<Pr
 	, _proc (p)
 {
 	_label.property_angle () = 90;
-	_collapse_btn.set_icon (ArdourIcon::HideEye);
+	_collapse_btn.set_icon (ArdourIcon::ArrowRight);
 	_collapse_btn.set_name ("processor collapse button");
 	_collapse_btn.set_tweaks (ArdourButton::Square);
 	_enable_btn.set_tweaks (ArdourButton::ExpandtoSquare);
@@ -88,7 +88,7 @@ ProcessorUIFrame::ProcessorUIFrame (std::shared_ptr<Route> r, std::shared_ptr<Pr
 
 	_ctrl_box.pack_start (_collapse_btn, false, false, 4);
 	_ctrl_box.pack_start (_label, true, true);
-	_ctrl_box.pack_start (_enable_btn, false, false, 4);
+	_ctrl_box.pack_start (_enable_btn, false, false, 7);
 	_top.pack_start (_ctrl_box, false, false);
 	_top.pack_start (*ui, true, true);
 	add (_top);
@@ -98,7 +98,12 @@ ProcessorUIFrame::ProcessorUIFrame (std::shared_ptr<Route> r, std::shared_ptr<Pr
 	set_tooltip (&_enable_btn, _("Bypass"));
 
 	_enable_btn.set_active (_proc->enabled ());
-	_collapse_btn.signal_clicked.connect ([&] () { _ui->set_visible (!_collapse_btn.get_active ()); save_state (); });
+	_collapse_btn.signal_clicked.connect ([&] () {
+			bool a = !_collapse_btn.get_active ();
+			_ui->set_visible (a);
+			save_state ();
+			_collapse_btn.set_icon (a ? ArdourIcon::ArrowRight : ArdourIcon::ArrowLeft);
+			});
 	_enable_btn.signal_clicked.connect ([&] () { _proc->enable (!_proc->enabled ()); });
 
 	p->ActiveChanged.connect (_connections, invalidator (*this), [&] () { _enable_btn.set_active (_proc->enabled ()); }, gui_context ());
@@ -111,6 +116,7 @@ ProcessorUIFrame::ProcessorUIFrame (std::shared_ptr<Route> r, std::shared_ptr<Pr
 		n->get_property (X_("visible"), visible);
 	}
 	_collapse_btn.set_active (!visible);
+	_collapse_btn.set_icon (visible ? ArdourIcon::ArrowLeft : ArdourIcon::ArrowRight);
 	_ui->set_visible (visible);
 }
 

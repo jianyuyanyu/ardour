@@ -136,8 +136,12 @@ static const gchar *_zoom_focus_strings[] = {
 	0
 };
 
-std::vector<std::string> EditingContext::_chord_name_list ({ _("maj"), _("min"), _("sus4"), _("sus2"), _("dim"), _("aug"),
-		_("maj7"), _("dom7"), _("min7"), _("min6"), _("min7b5"), _("dim7"), _("sus2/7"), _("sus4/7"), _("full dim"), _("maj7#5")});
+/* These are used in comparisons with text loaded from a file, and are thus not
+ * yet translatable.
+ */
+
+std::vector<std::string> EditingContext::_chord_name_list ({ X_("maj"), X_("min"), X_("sus4"), X_("sus2"), X_("dim"), X_("aug"),
+		X_("maj7"), X_("dom7"), X_("min7"), X_("min6"), X_("min7b5"), X_("dim7"), X_("sus2/7"), X_("sus4/7"), X_("full dim"), X_("maj7#5")});
 PBD::Signal<void()> EditingContext::ChordsChanged;
 
 EditingContext::EditingContext (std::string const & name)

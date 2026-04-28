@@ -102,7 +102,7 @@ ProcessorUIFrame::ProcessorUIFrame (std::shared_ptr<Route> r, std::shared_ptr<Pr
 			bool a = !_collapse_btn.get_active ();
 			_ui->set_visible (a);
 			save_state ();
-			_collapse_btn.set_icon (a ? ArdourIcon::ArrowRight : ArdourIcon::ArrowLeft);
+			_collapse_btn.set_icon (a ? ArdourIcon::ArrowLeft : ArdourIcon::ArrowRight);
 			});
 	_enable_btn.signal_clicked.connect ([&] () { _proc->enable (!_proc->enabled ()); });
 

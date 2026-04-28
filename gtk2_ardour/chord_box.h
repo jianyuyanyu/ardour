@@ -60,7 +60,8 @@ class ChordBox : public Gtk::VBox, public ARDOUR::ChordProvider
 	ArdourWidgets::ArdourDropdown culture_button;
 	Gtk::Label name_display;
 
-	void fill_table (Gtk::Table& table, std::vector<std::string> const & names, int chord_size);
+	void refill_tables ();
+	void fill_table (Gtk::Table& table, std::vector<std::string> const & names, size_t chord_size);
 	bool radio_ardour_button_hack (GdkEventButton* ev, ArdourWidgets::ArdourButton* button);
 
 	/* Western */
@@ -81,6 +82,7 @@ class ChordBox : public Gtk::VBox, public ARDOUR::ChordProvider
 	void build_western ();
 
 	void tet12_replace_chord (std::string const &);
+	bool tet12_edit_chord (GdkEventButton*, size_t n, int chord_size);
 	void tet12_modify_chord (std::string const &);
 	void tet12_invert_chord (bool);
 	void tet12_drop_chord (std::vector<int> const &);
@@ -89,4 +91,5 @@ class ChordBox : public Gtk::VBox, public ARDOUR::ChordProvider
 
 	int _root;
 	ARDOUR::MusicalModeCulture _culture;
+	PBD::ScopedConnection chord_connection;
 };

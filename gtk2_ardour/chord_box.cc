@@ -19,9 +19,13 @@
 #include "widgets/tooltips.h"
 
 #include "gtkmm2ext/actions.h"
+#include "gtkmm2ext/utils.h"
 
 #include "editing_context.h"
 #include "chord_box.h"
+#include "chord_dialog.h"
+#include "gui_thread.h"
+#include "keyboard.h"
 #include "ui_config.h"
 
 #include "pbd/i18n.h"
@@ -63,8 +67,8 @@ ChordBox::ChordBox (EditingContext& ec)
 	using namespace Menu_Helpers;
 	using namespace ArdourWidgets;
 
-	if (tet12_chords.empty()) {
-		build_12tet_chords ();
+	if (chord_info.empty()) {
+		load_12tet_chords ();
 	}
 
 	/* these must match the enum decl order */
@@ -82,6 +86,8 @@ ChordBox::ChordBox (EditingContext& ec)
 
 	set_border_width (12);
 	set_spacing (6);
+
+	EditingContext::ChordsChanged.connect (chord_connection, invalidator (*this), [&]() { refill_tables(); }, gui_context());
 }
 
 ChordBox::~ChordBox ()
@@ -148,9 +154,40 @@ ChordBox::radio_ardour_button_hack (GdkEventButton* ev, ArdourWidgets::ArdourBut
 }
 
 void
-ChordBox::fill_table (Gtk::Table& table, std::vector<std::string> const & names, int chord_size)
+ChordBox::refill_tables ()
+{
+	Gtkmm2ext::container_clear (triad_table);
+	Gtkmm2ext::container_clear (tetrad_table);
+
+	int tetrads = 0;
+	int triads = 0;
+
+	for (auto & s : editing_context.chord_name_list()) {
+		ChordInfo const * ci = ChordProvider::by_short_name (s);
+
+		if (!ci) {
+			continue;
+		}
+
+		if (ci->intervals.size() == 3) {
+			triads++;
+		} else if (ci->intervals.size() == 4) {
+			tetrads++;
+		}
+	}
+
+	triad_table.resize ((triads + 1) / 2, 2);
+	tetrad_table.resize ((tetrads + 1) / 2, 2);
+
+	fill_table (triad_table, editing_context.chord_name_list(), 3);
+	fill_table (tetrad_table, editing_context.chord_name_list(), 4);
+}
+
+void
+ChordBox::fill_table (Gtk::Table& table, std::vector<std::string> const & names, size_t chord_size)
 {
 	using namespace Gtk;
+	using namespace Gtkmm2ext;
 	using namespace Menu_Helpers;
 	using namespace ArdourWidgets;
 
@@ -163,7 +200,20 @@ ChordBox::fill_table (Gtk::Table& table, std::vector<std::string> const & names,
 
 	for (auto & s : names) {
 
+		ChordInfo const * ci = ChordProvider::by_short_name (s);
+
+		if (!ci) {
+			++n;
+			continue;
+		}
+
+		if (ci->intervals.size() != chord_size) {
+			++n;
+			continue;
+		}
+
 		butl = manage (new ArdourButton (s));
+		butl->signal_button_press_event().connect ([this,n,chord_size](GdkEventButton* ev) { return tet12_edit_chord (ev, n, chord_size); }, false);
 		butl->signal_clicked.connect ([this,s]() { tet12_replace_chord (s); });
 
 		butr = manage (new ArdourButton);
@@ -179,18 +229,15 @@ ChordBox::fill_table (Gtk::Table& table, std::vector<std::string> const & names,
 		if (n < names.size()) {
 
 			Glib::RefPtr<RadioAction> ract;
-			if (chord_size == 3) {
-				ract = editing_context.draw_triad_action (n);
-			} else {
-				ract = editing_context.draw_tetrad_action (n);
-			}
+			ract = editing_context.draw_chord_action (n);
 
 			if (ract) {
 				butr->set_related_action (ract);
 			}
 		}
 
-		dbut = new DoubleButton (*butl, *butr);
+		dbut = manage (new DoubleButton (*butl, *butr));
+		dbut->show ();
 		table.attach (*dbut, col, col+1, row, row+1);
 
 		++n;
@@ -205,7 +252,6 @@ ChordBox::fill_table (Gtk::Table& table, std::vector<std::string> const & names,
 	table.set_col_spacings (6);
 }
 
-
 void
 ChordBox::build_western ()
 {
@@ -213,21 +259,15 @@ ChordBox::build_western ()
 	using namespace Menu_Helpers;
 	using namespace ArdourWidgets;
 
-	triad_table.resize (3, 2);
-	tetrad_table.resize (5, 2);
 	inversion_table.resize (1, 2);
 	drop_table.resize (2, 2);
 
 	int row = 0;
 	int col = 0;
 
-	fill_table (triad_table, editing_context.triad_name_list(), 3);
-	fill_table (tetrad_table, editing_context.tetrad_name_list(), 4);
+	refill_tables ();
 
 	/* Inversions */
-
-	row = 0;
-	col = 0;
 
 	ArdourButton* but;
 
@@ -320,13 +360,13 @@ ChordBox::get_midi_chord (int root_pitch, std::vector<int>& pitches) const
 		return false;
 	}
 
-	auto res = tet12_chords.find (chord_name);
-
-	if (res != tet12_chords.end()) {
-		for (auto & interval : res->second) {
-			pitches.push_back (root_pitch + interval);
+	for (auto const & ci : chord_info) {
+		if (ci.short_name == chord_name) {
+			for (auto & interval : ci.intervals) {
+				pitches.push_back (root_pitch + interval);
+			}
+			return true;
 		}
-		return true;
 	}
 
 	return false;
@@ -335,12 +375,48 @@ ChordBox::get_midi_chord (int root_pitch, std::vector<int>& pitches) const
 void
 ChordBox::tet12_replace_chord (std::string const & name)
 {
-	auto res = tet12_chords.find (name);
-
-	if (res != tet12_chords.end()) {
-		ReplaceChord (res->second); /* EMIT SIGNAL */
+	for (auto const & ci : chord_info) {
+		if (ci.short_name == name) {
+			ReplaceChord (ci.intervals); /* EMIT SIGNAL */
+			return;
+		}
 	}
 }
+
+bool
+ChordBox::tet12_edit_chord (GdkEventButton* ev, size_t n, int chord_size)
+{
+	using namespace Gtk;
+	using namespace Gtkmm2ext;
+
+	if (!Keyboard::is_context_menu_event (ev) &&
+	    (ev->type != GDK_2BUTTON_PRESS || ev->button != 1)) {
+		return false;
+	}
+
+	ChordDialog cd (editing_context, *this, chord_size);
+	cd.present ();
+
+	switch (cd.run()) {
+	case RESPONSE_OK:
+		break;
+	default:
+		return true;
+	}
+
+	ChordInfo ci (cd.get_chord ());
+
+	std::cerr << "editing done, protected " << cd.is_protected () << std::endl;
+
+	if (cd.is_protected()) {
+		EditingContext::change_chord_list (n, ci.short_name);
+	} else {
+		ChordProvider::add_chord (ci);
+	}
+
+	return true;
+}
+
 
 void
 ChordBox::tet12_invert_chord (bool up)

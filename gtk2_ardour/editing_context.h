@@ -529,12 +529,13 @@ class EditingContext : public ARDOUR::SessionHandlePtr, public AxisViewProvider,
 	virtual Gtk::Menu* get_single_region_context_menu ();
 
 	bool get_midi_chord (int root_pitch, std::vector<int>& pitches) const { return false; }
-	Glib::RefPtr<Gtk::RadioAction> draw_triad_action (int num);
-	Glib::RefPtr<Gtk::RadioAction> draw_tetrad_action (int num);
+	Glib::RefPtr<Gtk::RadioAction> draw_chord_action (int num);
 	Glib::RefPtr<Gtk::RadioAction> no_chord_action () { return _no_chord_action; }
 
-	static std::vector<std::string> const & triad_name_list()  { return _triad_name_list; }
-	static std::vector<std::string> const & tetrad_name_list() { return _tetrad_name_list; }
+	static std::vector<std::string> const & chord_name_list()  { return _chord_name_list; }
+	static void change_chord_list (std::vector<std::string>::size_type, std::string const & new_chord_name);
+	static PBD::Signal<void()> ChordsChanged;
+
 	std::string const & draw_chord_name() const { return _draw_chord_name; }
 	bool have_draw_chord() const { return !_draw_chord_name.empty(); }
 
@@ -575,12 +576,10 @@ class EditingContext : public ARDOUR::SessionHandlePtr, public AxisViewProvider,
 	std::map<Editing::ZoomFocus, Glib::RefPtr<Gtk::RadioAction> > zoom_focus_actions;
 	std::map<int, Glib::RefPtr<Gtk::RadioAction> > draw_velocity_actions;
 	std::map<int, Glib::RefPtr<Gtk::RadioAction> > draw_channel_actions;
-	std::vector<Glib::RefPtr<Gtk::RadioAction> > draw_triad_actions;
-	std::vector<Glib::RefPtr<Gtk::RadioAction> > draw_tetrad_actions;
+	std::vector<Glib::RefPtr<Gtk::RadioAction> > draw_chord_actions;
 	Glib::RefPtr<Gtk::RadioAction> _no_chord_action;
 
-	void draw_triad_chosen (int);
-	void draw_tetrad_chosen (int);
+	void draw_chord_chosen (int);
 	void draw_channel_chosen (int);
 	void draw_velocity_chosen (int);
 	void draw_length_chosen (Editing::GridType);
@@ -895,7 +894,6 @@ class EditingContext : public ARDOUR::SessionHandlePtr, public AxisViewProvider,
 
 	bool temporary_zoom_focus_change;
 	bool _dragging_playhead;
-	static std::vector<std::string> _triad_name_list;
-	static std::vector<std::string> _tetrad_name_list;
+	static std::vector<std::string> _chord_name_list;
 	std::string _draw_chord_name;
 };

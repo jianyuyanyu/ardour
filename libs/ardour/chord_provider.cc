@@ -321,6 +321,10 @@ ChordProvider::save ()
 	std::string path = Glib::build_filename (user_config_directory(), "chords.txt");
 	std::ofstream f (path, std::ofstream::trunc);
 
+	if (!f) {
+		return -1;
+	}
+
 	for (auto const & ci : chord_info) {
 		for (auto n : ci.intervals) {
 			f << n << ',';

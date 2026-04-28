@@ -38,18 +38,37 @@ class LIBARDOUR_API ChordProvider
 
 	virtual bool get_midi_chord (int root_pitch, Intervals& pitches) const = 0;
 
-	/* maps a hash of Intervals to a name */
-	typedef std::map<int64_t, std::string> IntervalsToChordName;
-	static IntervalsToChordName tet12_names;
+	struct ChordInfo {
+		Intervals intervals;
+		int64_t hashed;
+		std::string canonical_name;
+		std::string short_name;
+		std::vector<std::string> other_names;
 
-	/* maps (potentiall multiple) names to Intervals */
-	typedef std::map<std::string,Intervals> ChordNameToIntervals;
-	static ChordNameToIntervals tet12_chords;
+		ChordInfo (Intervals const & i, int64_t hash, std::string const & canon, std::string const & shrt, std::vector<std::string> const & others)
+			: intervals (i)
+			, hashed (hash)
+			, canonical_name (canon)
+			, short_name (shrt)
+			, other_names (others) {}
+	};
 
-	static void build_12tet_chords ();
-	template<typename...Names> static void register_12tet_chord (Intervals const & intervals, std::string const & canonical_name, Names...chord_names);
+	ChordInfo const * by_short_name (std::string const &) const;
+	ChordInfo const * by_canonical_name (std::string const &) const;
+	ChordInfo const * by_any_name (std::string const &) const;
+
+	static std::vector<ChordInfo> chord_info;
+	static void load_12tet_chords ();
+	static int64_t hash_intervals (ChordProvider::Intervals const & intervals);
+	static bool add_chord (ChordInfo const &);
+
+	static int load (std::string const & path);
+	static int save ();
 
 	std::string identify_chord (Intervals const &);
+	std::string canonical_name (Intervals const &);
+	std::string short_name (Intervals const &);
+	std::vector<std::string> other_names (Intervals const &);
 
 	enum TET12Intervals {
 		Unison = 0,
@@ -106,7 +125,7 @@ class LIBARDOUR_API ChordProvider
 		P11 = 17,
 		MajorThirteenth = 21, // Octave + 9
 		M13 = 21,
-		
+
 	};
 };
 

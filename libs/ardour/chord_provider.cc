@@ -19,20 +19,29 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
+#include <fstream>
+#include <string>
+
+#include <glibmm/fileutils.h>
+#include <glibmm/miscutils.h>
+
+#include "pbd/file_utils.h"
+#include "pbd/strsplit.h"
 
 #include "ardour/chord_provider.h"
+#include "ardour/filesystem_paths.h"
 #include "ardour/libardour_visibility.h"
 #include "ardour/parameter_descriptor.h"
+#include "ardour/search_paths.h"
 
 #include "pbd/i18n.h"
 
 using namespace ARDOUR;
 
-LIBARDOUR_API ChordProvider::ChordNameToIntervals ChordProvider::tet12_chords;
-LIBARDOUR_API ChordProvider::IntervalsToChordName ChordProvider::tet12_names;
+std::vector<ChordProvider::ChordInfo> ChordProvider::chord_info;
 
-static int64_t
-hash_intervals (ChordProvider::Intervals const & intervals)
+int64_t
+ChordProvider::hash_intervals (ChordProvider::Intervals const & intervals)
 {
 	assert (!intervals.empty());
 
@@ -50,65 +59,34 @@ hash_intervals (ChordProvider::Intervals const & intervals)
 	return ret;
 }
 
-template<typename...Names>
 void
-ChordProvider::register_12tet_chord (Intervals const & intervals, std::string const & canonical_name, Names...chord_names)
+ChordProvider::load_12tet_chords ()
 {
-	tet12_names.insert (std::make_pair (hash_intervals (intervals), canonical_name));
-	tet12_chords.insert (std::make_pair (canonical_name, intervals));
+	std::string path;
 
-	for (auto & chord_name : { chord_names... } ) {
-		tet12_chords.insert (std::make_pair (chord_name, intervals));
+	if (!find_file (ardour_data_search_path(), "chords.txt", path)) {
+		std::cerr << "Chord definitions not found!\n";
+		return;
 	}
+
+	load (path);
 }
 
-void
-ChordProvider::build_12tet_chords ()
+bool
+ChordProvider::add_chord (ChordInfo const & new_chord)
 {
-	register_12tet_chord ({Unison, PerfectFifth},                                   _("Power (5th)"), _("pow5"));
+	for (auto & ci : chord_info) {
+		if (new_chord.hashed == ci.hashed ||
+		    new_chord.canonical_name == ci.canonical_name ||
+		    new_chord.short_name == ci.short_name) {
+			std::cerr << "exists\n";
+			return false;
+		}
+	}
 
-	/* triads */
-
-	register_12tet_chord ({Unison, MajorThird, PerfectFifth},                       _("Major"), _("maj"), _("major"));
-	register_12tet_chord ({Unison, MinorThird, PerfectFifth},                       _("Minor"), _("min"), _("minor"));
-	register_12tet_chord ({Unison, MinorThird, 6},                                  _("Diminished"), _("dim"));
-	register_12tet_chord ({Unison, MajorThird, MinorSixth},                         _("Augmented"), _("aug"));
-	register_12tet_chord ({Unison, PerfectFourth, PerfectFifth},                    _("Sus4"), _("sus4"));
-	register_12tet_chord ({Unison, MajorSecond, PerfectFifth},                      _("Sus2"), _("sus2"));
-
-	/* tetrads */
-
-	register_12tet_chord ({Unison, MajorThird, PerfectFifth, MajorSeventh},         _("Major 7th"), _("maj7"));
-	register_12tet_chord ({Unison, MajorThird, PerfectFifth, MinorSeventh},         _("Dominant 7th"), _("dom7"));
-	register_12tet_chord ({Unison, MinorThird, PerfectFifth, MinorSeventh},         _("Minor 7th"), _("min7"));
-	register_12tet_chord ({Unison, MinorThird, DiminishedFifth, MinorSeventh},      _("Half Diminished 7th"), _("halfdim7"));
-	register_12tet_chord ({Unison, MinorThird, DiminishedFifth, DiminishedSeventh}, _("Diminished 7th"), _("dim7"));
-	register_12tet_chord ({Unison, MinorThird, PerfectFifth, MajorSeventh},         _("Minor/Major 7th"), _("min/maj7"));
-	register_12tet_chord ({Unison, MinorThird, AugmentedFifth, MajorSeventh},       _("Major 7th/flat 5"), _("maj7b5"));
-	register_12tet_chord ({Unison, MinorThird, AugmentedFifth, MajorSeventh},       _("Major 7th/sharp 5"), _("maj7#5"));
-	register_12tet_chord ({Unison, MinorThird, DiminishedFifth, MinorSeventh},      _("Half-Diminished 7th"), _("m7b5"));
-	register_12tet_chord ({Unison, MinorThird, DiminishedFifth, MajorSixth},        _("Diminished 7th"), _("dim7"));
-	register_12tet_chord ({Unison, MajorThird, MinorSixth, MinorSeventh},           _("Augmented 7th"), _("aug7"));
-	register_12tet_chord ({Unison, MajorThird, MinorSixth, MajorSeventh},           _("Augmented Major 7th"), _("aug-dom-7"));
-
-	/* Pentachords */
-
-	register_12tet_chord ({Unison, MajorThird, PerfectFifth, MinorSeventh, MajorNinth},     _("Dominant 9th"), _("dom9"));
-	register_12tet_chord ({Unison, MajorThird, PerfectFifth, MajorSeventh, MajorNinth},     _("Major 9th"), _("9"), _("maj9"));
-	register_12tet_chord ({Unison, MinorThird, PerfectFifth, MinorSeventh, MajorNinth},     _("Minor 9th"), _("min9"));
-	register_12tet_chord ({Unison, MajorThird, PerfectFifth, MajorNinth},                   _("Add9"), _("add9"));
-	register_12tet_chord ({Unison, MinorThird, PerfectFifth, MajorNinth},                   _("Minor Add9"), _("min/9"));
-	register_12tet_chord ({Unison, MajorThird, PerfectFifth, MajorSixth},                   _("Major 6th"), _("maj6"));
-	register_12tet_chord ({Unison, MinorThird, PerfectFifth, MajorSixth},                   _("Minor 6th"), _("min6"));
-	register_12tet_chord ({Unison, MajorThird, PerfectFifth, MajorSixth, MajorNinth},       _("Major 6/9"), _("maj6/9"));
-	register_12tet_chord ({Unison, MajorSecond, PerfectFifth, MajorSeventh},                _("Sus2/7"), _("sus2/7"));
-	register_12tet_chord ({Unison, PerfectFourth, PerfectFifth, MajorSeventh},              _("Sus4/7"), _("sus4/7"));
-
-	/* Hexachords */
-
-	register_12tet_chord ({Unison, MajorThird, PerfectFifth, MinorSeventh, MajorNinth, P11}, _("Dominant 11th"), _("dom11"));
-	register_12tet_chord ({Unison, MajorThird, PerfectFifth, MajorSeventh, MajorNinth, M13}, _("Major 13th"), _("maj13"));
-
+	chord_info.push_back (new_chord);
+	save ();
+	return true;
 }
 
 static inline
@@ -167,8 +145,8 @@ ChordProvider::identify_chord (std::vector<int> const & pitches)
 		return "";
 	}
 
-	if (tet12_names.empty() ){
-		build_12tet_chords ();
+	if (chord_info.empty() ){
+		load_12tet_chords ();
 	}
 
 	int bass = *std::min_element (pitches.begin(), pitches.end());
@@ -179,13 +157,13 @@ ChordProvider::identify_chord (std::vector<int> const & pitches)
 		auto intervals = to_intervals (pcs, root);
 		int64_t hashed = hash_intervals (intervals);;
 
-		for (auto const & [hashed_intervals,name] : tet12_names) {
+		for (auto const & ci : chord_info) {
 
-			if (hashed_intervals == hashed) {
+			if (hashed == ci.hashed) {
 				std::string ret;
 				/* translate note names but no enharmonics */
 				ret = ParameterDescriptor::midi_note_name (root, true, false, false) + ' ';
-				ret += name;
+				ret += ci.canonical_name;
 
 				if (bass_class != root) {
 					/* slash chord */
@@ -198,4 +176,167 @@ ChordProvider::identify_chord (std::vector<int> const & pitches)
 	}
 
 	return _("Unknown");
+}
+
+std::string
+ChordProvider::canonical_name (Intervals const & intervals)
+{
+	int64_t hashed = hash_intervals (intervals);
+
+	for (auto const & ci : chord_info) {
+		if (ci.hashed == hashed) {
+			return ci.canonical_name;
+		}
+	}
+
+	return std::string ();
+}
+
+
+std::string
+ChordProvider::short_name (Intervals const & intervals)
+{
+	int64_t hashed = hash_intervals (intervals);
+
+	for (auto const & ci : chord_info) {
+		if (ci.hashed == hashed) {
+			return ci.short_name;
+		}
+	}
+
+	return std::string ();
+}
+
+std::vector<std::string>
+ChordProvider::other_names (Intervals const & intervals)
+{
+	int64_t hashed = hash_intervals (intervals);
+
+	for (auto const & ci : chord_info) {
+		if (ci.hashed == hashed) {
+			return ci.other_names;
+		}
+	}
+
+	return std::vector<std::string> ();
+}
+
+ChordProvider::ChordInfo const *
+ChordProvider::by_short_name (std::string const & sn) const
+{
+	for (auto const & ci : chord_info) {
+		if (ci.short_name == sn) {
+			return &ci;
+		}
+	}
+
+	return nullptr;
+}
+
+ChordProvider::ChordInfo const *
+ChordProvider::by_canonical_name (std::string const & sn) const
+{
+	for (auto const & ci : chord_info) {
+		if (ci.canonical_name == sn) {
+			return &ci;
+		}
+	}
+
+	return nullptr;
+}
+
+ChordProvider::ChordInfo const *
+ChordProvider::by_any_name (std::string const & sn) const
+{
+	for (auto const & ci : chord_info) {
+		if (ci.canonical_name == sn ||
+		    ci.short_name == sn) {
+			return &ci;
+		}
+		for (auto const & on : ci.other_names) {
+			if (on == sn) {
+				return &ci;
+			}
+		}
+	}
+
+	return nullptr;
+}
+
+
+int
+ChordProvider::load (std::string const & path)
+{
+	using namespace std;
+
+	ifstream f (path);
+
+	if (!f.good()) {
+		return -1;
+	}
+
+	string line;
+
+	while (1) {
+
+		getline (f, line);
+
+		if (!f.good()) {
+			return -1;
+		}
+		if (line.empty() || line[0] == '#') {
+			continue;
+		}
+
+		vector<string> parts;
+		split (line, parts, ';');
+
+		if (parts.size() < 3) {
+			continue;
+		}
+
+		vector<string> intervals;
+		split (parts[0], intervals, ',');
+
+		Intervals ints;
+		for (auto const & i : intervals) {
+			int n = atoi (i.c_str());
+			ints.push_back (n);
+		}
+
+		vector<string> others;
+		for (size_t on = 3; on < parts.size(); ++on) {
+			others.push_back (parts[on]);
+		}
+
+		chord_info.push_back (ChordInfo (ints, hash_intervals (ints), parts[1], parts[2], others));
+	}
+
+	return 0;
+}
+
+int
+ChordProvider::save ()
+{
+	std::string path = Glib::build_filename (user_config_directory(), "chords.txt");
+	std::ofstream f (path, std::ofstream::trunc);
+
+	for (auto const & ci : chord_info) {
+		for (auto n : ci.intervals) {
+			f << n << ',';
+		}
+		f << ';'
+		  << ci.canonical_name
+		  << ';'
+		  << ci.short_name
+		  << ';';
+		for (auto const & o : ci.other_names) {
+			f << o << ';';
+		}
+		f << '\n';
+	}
+
+	f.close ();
+
+	return 0;
 }

@@ -273,7 +273,7 @@ discover_vst3 (std::shared_ptr<ARDOUR::VST3PluginModule> m, std::vector<ARDOUR::
 				count_all_count_channels (nfo, component, verbose, true);
 			}
 
-			processor->setProcessing (false);
+			component->setActive (true);
 			component->setActive (false);
 
 			component->terminate ();

@@ -35,10 +35,10 @@
 0,3,7,14;Minor Add9;min/9
 0,2,7,11;Sus2/7;sus2/7
 0,5,7,11;Sus4/7;sus4/7
-0,4,7,12;Gtr 4-str major;gtr-maj-4
-0,3,7,12;Gtr 4-str minor;gtr-min-4
+0,4,7,12;Gtr 4-str major;gtr4maj
+0,3,7,12;Gtr 4-str minor;gtr4min
 0,4,10,13;Hendrix 7b9;h7b9
-0,4,10,14;Hendrix 7 nat 9;h7^9;7+9;7/9;9
+0,4,10,14;Dominant 9th no 5;dom9-5
 0,4,10,15;Hendrix 7#9;h7#9
 
 # Pentachords
@@ -54,7 +54,7 @@
 
 0,4,7,10,14,17;Dominant 11th;dom11
 0,4,7,11,14,21;Major 13th;maj13
-0,4,7,12,19,24:Gtr 6-str major;gtr6-maj;
-0,3,7,12,19,24:Gtr 6-str minor;gtr6-min;
+0,4,7,12,19,24:Gtr 6-str major;gtr6maj;
+0,3,7,12,19,24:Gtr 6-str minor;gtr6min;
 
 

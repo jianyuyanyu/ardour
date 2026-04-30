@@ -1053,7 +1053,7 @@ def configure(conf):
 
     # set explicit LIBDIR, otherwise mingw/windows builds use
     # conf.env.LIBDIR = conf.env.BINDIR and `waf install` fails
-    # because $BINDIR/ardour6 is the main binary, and $LIBDIR/ardour6/ a directory
+    # because $BINDIR/ardourN is the main binary, and $LIBDIR/ardourN/ a directory
     if Options.options.libdir:
         conf.env.LIBDIR = Options.options.libdir
 

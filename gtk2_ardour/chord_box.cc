@@ -81,7 +81,10 @@ ChordBox::ChordBox (EditingContext& ec)
 	culture_button.add_menu_elem (MenuElem (_("China"), [this]() { set_culture (China); }));
 
 	pack_start (culture_button, false, false);
-	culture_button.show ();
+	/* Until this does something, don't show it */
+	// culture_button.show ();
+	culture_button.hide ();
+	culture_button.set_no_show_all ();
 	culture_button.set_active (0);
 
 	set_border_width (12);

@@ -595,6 +595,9 @@ def build(bld):
             obj.use += ['avx512f_functions' ]
             obj.defines += [ 'FPU_AVX512F_SUPPORT' ]
 
+    # chord definitions
+    bld.install_files (bld.env['DATADIR'], '../../share/chords.txt')
+
     # i18n
     if bld.is_defined('ENABLE_NLS'):
         mo_files = bld.path.ant_glob('po/*.mo')

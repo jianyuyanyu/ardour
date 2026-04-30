@@ -660,7 +660,8 @@ RouteTimeAxisView::build_display_menu ()
 
 	MenuList& items = display_menu->items();
 
-	items.push_back (MenuElem (_("Scale..."), sigc::mem_fun (*this, &RouteTimeAxisView::edit_scale)));
+	// Awaiting expanded/complete scale support
+	// items.push_back (MenuElem (_("Scale..."), sigc::mem_fun (*this, &RouteTimeAxisView::edit_scale)));
 
 	/* now fill it with our stuff */
 	if (active) {

@@ -14,7 +14,7 @@
 # tetrads
 
 0,4,7,11;Major 7th;maj7
-0,4,7,10;Dominant 7th;dom7
+0,4,7,10;Dominant 7th;7
 0,3,7,10;Minor 7th;min7
 0,3,6,10;Half Diminished 7th;halfdim7
 0,3,6,9;Diminished 7th;dim7

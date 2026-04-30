@@ -89,6 +89,9 @@ private:
 	Gtk::CheckButton collect_button;
 	Gtk::CheckButton delta_time_button;
 	Gtk::ComboBox    _midi_port_combo;
+	Gtk::Button      clear_button;
+
+	void clear_clicked ();
 
 	class MidiPortCols : public Gtk::TreeModelColumnRecord
 	{

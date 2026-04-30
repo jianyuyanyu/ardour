@@ -61,6 +61,7 @@ MidiTracer::MidiTracer ()
 	, base_button (_("Decimal"))
 	, collect_button (_("Enabled"))
 	, delta_time_button (_("Delta times"))
+	, clear_button (_("Clear"))
 {
 	_update_queued.store (0);
 
@@ -89,6 +90,7 @@ MidiTracer::MidiTracer ()
 
 	scroller.add (text);
 	vbox->set_border_width (12);
+	vbox->set_spacing (12);
 	vbox->pack_start (scroller, true, true);
 
 	text.show ();
@@ -117,7 +119,9 @@ MidiTracer::MidiTracer ()
 	bbox->show ();
 
 	vbox->pack_start (*bbox, false, false);
-
+	vbox->pack_start (clear_button, false, false);
+	clear_button.show ();
+	clear_button.signal_clicked ().connect (sigc::mem_fun (*this, &MidiTracer::clear_clicked));
 	add (*vbox);
 
 	base_button.signal_toggled().connect (sigc::mem_fun (*this, &MidiTracer::base_toggle));
@@ -137,6 +141,14 @@ MidiTracer::~MidiTracer()
 {
 	disconnect ();
 	AudioEngine::instance ()->unregister_port (tracer_port);
+}
+
+void
+MidiTracer::clear_clicked ()
+{
+	auto start = text.get_buffer()->begin();
+	auto end = text.get_buffer()->end();
+	text.get_buffer()->erase (start, end);
 }
 
 void

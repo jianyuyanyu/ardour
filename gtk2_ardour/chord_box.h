@@ -68,12 +68,14 @@ class ChordBox : public Gtk::VBox, public ARDOUR::ChordProvider
 
 	Gtk::Table triad_table;
 	Gtk::Table tetrad_table;
+	Gtk::Table pentad_table;
 
 	Gtk::Table inversion_table;
 	Gtk::Table drop_table;
 
 	Gtk::Label triad_label;
 	Gtk::Label tetrad_label;
+	Gtk::Label pentad_label;
 	Gtk::Label inversion_label;
 	Gtk::Label drop_label;
 

@@ -125,8 +125,8 @@ void
 AudioRegionGainLine::enable_automation ()
 {
 	if (!arv.audio_region()->envelope_active()) {
-		XMLNode& before = arv.audio_region()->get_state();
-		arv.audio_region()->set_envelope_active(true);
-		trackview.session()->add_command(new MementoCommand<AudioRegion>(*(arv.audio_region().get()), &before, &arv.audio_region()->get_state()));
+		arv.audio_region()->clear_changes ();
+		arv.audio_region()->set_envelope_active (true);
+		trackview.session()->add_command (new PBD::StatefulDiffCommand (arv.audio_region()));
 	}
 }

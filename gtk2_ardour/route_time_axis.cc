@@ -431,10 +431,12 @@ RouteTimeAxisView::label_view ()
 	string x = _route->name ();
 	if (x != name_label.get_text ()) {
 		name_label.set_text (x);
+		ArdourWidgets::set_tooltip (name_label, string_compose (_("%1 (double click to edit)"), x));
 	}
 
 	inactive_label.set_text (string_compose("(%1)", x));
 	inactive_label.show ();
+	ArdourWidgets::set_tooltip (inactive_label, string_compose (_("%1 (Inactive, right click to activate)"), x));
 
 	const int64_t track_number = _route->track_number ();
 	if (track_number == 0) {

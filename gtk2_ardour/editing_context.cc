@@ -140,8 +140,12 @@ static const gchar *_zoom_focus_strings[] = {
  * yet translatable.
  */
 
-std::vector<std::string> EditingContext::_chord_name_list ({ X_("maj"), X_("min"), X_("sus4"), X_("sus2"), X_("dim"), X_("aug"),
-		X_("maj7"), X_("7"), X_("min7"), X_("min6"), X_("min7b5"), X_("dim7"), X_("sus2/7"), X_("sus4/7"), X_("dim7"), X_("maj7#5")});
+std::vector<std::string> EditingContext::_chord_name_list ({
+		X_("maj"), X_("min"), X_("sus4"), X_("sus2"), X_("dim"), X_("aug"),
+		X_("maj7"), X_("7"), X_("min7"), X_("min6"), X_("min7b5"), X_("dim7"), X_("sus2/7"), X_("sus4/7"), X_("maj7#5"),
+		X_("dom9"), X_("maj9"), X_("min9"), X_("add9"), X_("min/9"), X_("maj6"), X_("min6"), X_("maj6/9"), X_("sus2/7"), X_("sus4/7"), X_("gtr5-maj"), X_("gtr5-min"),
+	});
+
 PBD::Signal<void()> EditingContext::ChordsChanged;
 
 EditingContext::EditingContext (std::string const & name)
@@ -764,11 +768,11 @@ EditingContext::register_midi_actions (Bindings* midi_bindings, std::string cons
 	chord_actions = ActionManager::create_action_group (midi_bindings, prefix + X_("Chords"));
 	RadioAction::Group draw_chord_group;
 
-	draw_chord_actions.resize (20);
+	draw_chord_actions.resize (30);
 
 	_no_chord_action = ActionManager::register_radio_action (chord_actions, draw_chord_group, X_("no-draw-chord"), _("No Chord"), sigc::bind (sigc::mem_fun (*this, &EditingContext::draw_chord_chosen), -1));
 
-	for (int n = 0; n < 20; ++n) {
+	for (int n = 0; n < 30; ++n) {
 		char action_name[64];
 		char action_desc[64];
 		snprintf (action_name, sizeof (action_name), X_("draw-chord-%d"), n);

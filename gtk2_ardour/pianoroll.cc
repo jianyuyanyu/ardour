@@ -120,7 +120,7 @@ Pianoroll::Pianoroll (std::string const & name, bool with_transport, bool expand
 	/* Ordering must match enum declaration order */
 	colors_dropdown.add_menu_elem (MenuElem (_("Velocity"), sigc::bind (sigc::mem_fun (*this, &Pianoroll::set_color_mode), ARDOUR::MeterColors)));
 	colors_dropdown.add_menu_elem (MenuElem (_("Channel"), sigc::bind (sigc::mem_fun (*this, &Pianoroll::set_color_mode), ARDOUR::ChannelColors)));
-	colors_dropdown.add_menu_elem (MenuElem (_("Region"), sigc::bind (sigc::mem_fun (*this, &Pianoroll::set_color_mode), ARDOUR::TrackColor)));
+	colors_dropdown.add_menu_elem (MenuElem (_("Track"), sigc::bind (sigc::mem_fun (*this, &Pianoroll::set_color_mode), ARDOUR::TrackColor)));
 	colors_dropdown.add_menu_elem (MenuElem (_("Pitch"), sigc::bind (sigc::mem_fun (*this, &Pianoroll::set_color_mode), ARDOUR::PitchColors)));
 	colors_dropdown.add_menu_elem (MenuElem (_("Setup"), sigc::mem_fun (*this, &Pianoroll::setup_colors)));
 	colors_dropdown.set_active ((int) _color_mode);

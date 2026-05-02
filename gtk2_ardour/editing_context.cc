@@ -146,7 +146,7 @@ static const gchar *_zoom_focus_strings[] = {
 std::vector<std::string> EditingContext::_chord_name_list ({
 		X_("maj"), X_("min"), X_("sus4"), X_("sus2"), X_("dim"), X_("aug"),
 		X_("maj7"), X_("7"), X_("min7"), X_("min6"), X_("min7b5"), X_("dim7"), X_("sus2/7"), X_("sus4/7"), X_("maj7#5"),
-		X_("dom9"), X_("maj9"), X_("min9"), X_("add9"), X_("min/9"), X_("maj6"), X_("min6"), X_("maj6/9"), X_("sus2/7"), X_("sus4/7"), X_("gtr5-maj"), X_("gtr5-min"),
+		X_("dom9"), X_("9"), X_("min9"), X_("add9"), X_("min/9"), X_("maj6"), X_("min6"), X_("maj6/9"), X_("sus2/7"), X_("sus4/7"), X_("gtr5maj"), X_("gtr5min"),
 	});
 
 PBD::Signal<void()> EditingContext::ChordsChanged;

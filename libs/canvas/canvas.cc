@@ -855,7 +855,6 @@ GtkCanvas::deliver_enter_leave (Duple const & point, int state)
 		if (!(*it)->ignore_events()) {
 			DEBUG_TRACE (PBD::DEBUG::CanvasEnterLeave, string_compose ("enter %1 @ %2\n", (*it)->whoami(), (*it)));
 			(*it)->Event ((GdkEvent*)&enter_event);
-			// std::cerr << "enter " << (*it)->whatami() << '/' << (*it)->name << std::endl;
 		}
 	}
 

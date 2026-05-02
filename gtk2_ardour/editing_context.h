@@ -543,7 +543,7 @@ class EditingContext : public ARDOUR::SessionHandlePtr, public AxisViewProvider,
 
 	virtual void add_semitone_interval (int semitones);
 
-	void pianoroll_edit (std::shared_ptr<ARDOUR::MidiRegion>, std::shared_ptr<ARDOUR::MidiTrack>);
+	void pianoroll_edit ();
 
   protected:
 	std::string _name;

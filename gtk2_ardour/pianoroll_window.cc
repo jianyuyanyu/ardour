@@ -29,6 +29,8 @@
 #include "pianoroll_window.h"
 #include "region_editor.h"
 
+#include "pbd/i18n.h"
+
 using namespace ARDOUR;
 
 PianorollWindow::PianorollWindow (std::string const & name, Session& s)
@@ -69,6 +71,8 @@ PianorollWindow::set_region (std::shared_ptr<MidiTrack> track, std::shared_ptr<M
 {
 	pianoroll->add_region (region, track);
 	pianoroll->set_region (region);
+
+	set_title (string_compose (_("Pianoroll: %1"), region->name()));
 }
 
 void

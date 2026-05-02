@@ -9525,7 +9525,8 @@ Editor::temporal_zoom_extents ()
 void
 Editor::edit_region_in_dedicated_window ()
 {
-	selection->foreach_regionview (&RegionView::show_region_editor);
+	/* MIDI only right now */
+	pianoroll_edit ();
 }
 
 void

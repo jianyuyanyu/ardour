@@ -365,6 +365,8 @@ EditingContext::set_session (ARDOUR::Session* s)
 
 	SessionHandlePtr::set_session (s);
 	disable_automation_bindings ();
+	delete pianoroll_window;
+	pianoroll_window = nullptr;
 }
 
 void
@@ -4189,14 +4191,48 @@ EditingContext::get_single_region_context_menu ()
 void
 EditingContext::region_selection_changed ()
 {
-	if (!pianoroll_window || !pianoroll_window->is_mapped()) {
+	if (!pianoroll_window || selection->regions.empty()) {
 		return;
+	}
+
+	std::vector<MidiRegionView*> midi_region_views;
+	std::set<Temporal::Beats> positions;
+
+	for (auto & rv : selection->regions) {
+		MidiRegionView* mrv = dynamic_cast<MidiRegionView*> (rv);
+		if (mrv) {
+			midi_region_views.push_back (mrv);
+			positions.insert (mrv->region()->position().beats());
+		}
+	}
+
+	if (midi_region_views.empty()) {
+		return;
+	}
+
+	if (positions.size() > 1) {
+		/* multiple positions for the regions, so just pick one of the
+		   positions, and the regions there
+		*/
+
+		Temporal::Beats first_position (*positions.begin());
+
+		for (auto i = midi_region_views.begin(); i != midi_region_views.end(); ) {
+			if ((*i)->region()->position().beats() != first_position) {
+				i = midi_region_views.erase (i);
+			} else {
+				i++;
+			}
+		}
 	}
 
 	bool have_set = false;
 
-	for (auto & rv : selection->regions) {
-		TimeAxisView& tav (rv->get_time_axis_view());
+	std::shared_ptr<ARDOUR::MidiTrack> kt;
+	std::shared_ptr<ARDOUR::MidiRegion> kr;
+
+	for (auto & mrv : midi_region_views) {
+		TimeAxisView& tav (mrv->get_time_axis_view());
 		RouteTimeAxisView* rtav = dynamic_cast<RouteTimeAxisView*> (&tav);
 		if (!rtav) { /* how */
 			continue;
@@ -4207,40 +4243,34 @@ EditingContext::region_selection_changed ()
 			continue;
 		}
 
-		std::shared_ptr<MidiRegion> midi_region = std::dynamic_pointer_cast<MidiRegion> (rv->region());
+		std::shared_ptr<MidiRegion> midi_region = std::dynamic_pointer_cast<MidiRegion> (mrv->region());
 		if (!midi_region) {
 			continue;
 		}
 
 		if (!have_set) {
-			pianoroll_window->replace_region (track, midi_region);
+			kt = track;
+			kr = midi_region;
 			have_set = true;
 		} else {
 			pianoroll_window->add_region (track, midi_region);
 		}
 	}
+
+	pianoroll_window->set_region (kt, kr);
 }
 
 void
-EditingContext::pianoroll_edit (std::shared_ptr<MidiRegion> region, std::shared_ptr<MidiTrack> track)
+EditingContext::pianoroll_edit ()
 {
 	if (!pianoroll_window) {
-		pianoroll_window = new PianorollWindow (string_compose (_("Pianoroll: %1"), region->name()), track->session());
+		pianoroll_window = new PianorollWindow (_("Pianoroll Window"), *_session);
 		pianoroll_window->signal_delete_event().connect (sigc::bind (sigc::ptr_fun (ARDOUR_UI_UTILS::just_hide_it), pianoroll_window));
 	}
 
 	pianoroll_window->set_show_source (false);
 
-	if (selection->regions.size() == 1) {
-		pianoroll_window->replace_region (track, region);
-	} else {
-		pianoroll_window->replace_region (track, region);
-		for (auto & r : selection->regions) {
-			if (r->region() != region) {
-				// pianoroll_window->add (TRACK, r);
-			}
-		}
-	}
+	region_selection_changed ();
 
 	pianoroll_window->show_all ();
 	pianoroll_window->present ();

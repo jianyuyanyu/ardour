@@ -639,20 +639,6 @@ MidiRegionView::make_merger ()
 }
 
 void
-MidiRegionView::show_region_editor ()
-{
-	std::shared_ptr<MidiTrack> track = std::dynamic_pointer_cast<MidiTrack> (trackview.stripable());
-	assert (track);
-	_editing_context.pianoroll_edit (midi_region(), track);
-}
-
-void
-MidiRegionView::hide_region_editor ()
-{
-	RegionView::hide_region_editor ();
-}
-
-void
 MidiRegionView::trim_front_starting ()
 {
 	/* We used to eparent the note group to the region view's parent, so that it didn't change.

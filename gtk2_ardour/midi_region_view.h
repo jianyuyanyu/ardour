@@ -134,8 +134,6 @@ public:
 	void set_visibility_note_range (MidiViewBackground::VisibleNoteRange, bool);
 
 	MergeableLine* make_merger ();
-	void show_region_editor ();
-	void hide_region_editor ();
 
 	void trim_front_starting ();
 	void trim_front_ending ();

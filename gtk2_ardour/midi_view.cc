@@ -5886,7 +5886,6 @@ MidiView::set_visible_channel (int chn, bool clear_selection)
 
 		if (gui->item()->visible()) {
 			color_note (gui, note->channel());
-			std::cerr << "note " << *note << " editable ? " << note_editable (gui) << std::endl;
 			gui->set_ignore_events (!note_editable (gui));
 		}
 	}

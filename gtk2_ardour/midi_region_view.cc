@@ -638,39 +638,18 @@ MidiRegionView::make_merger ()
 	return nullptr;
 }
 
-bool
-MidiRegionView::pianoroll_window_deleted (GdkEventAny*)
-{
-	_editor = nullptr;
-	return false;
-}
-
 void
 MidiRegionView::show_region_editor ()
 {
-	if (!_editor) {
-		std::shared_ptr<MidiTrack> track = std::dynamic_pointer_cast<MidiTrack> (trackview.stripable());
-		assert (track);
-
-		PianorollWindow* pr = new PianorollWindow (string_compose (_("Pianoroll: %1"), _region->name()), track->session());
-
-		pr->set (track, midi_region());
-		pr->set_show_source (false);
-
-		pr->signal_delete_event().connect (sigc::mem_fun (*this, &MidiRegionView::pianoroll_window_deleted), false);
-		_editor = pr;
-	}
-
-	_editor->show_all ();
-	_editor->present ();
+	std::shared_ptr<MidiTrack> track = std::dynamic_pointer_cast<MidiTrack> (trackview.stripable());
+	assert (track);
+	_editing_context.pianoroll_edit (midi_region(), track);
 }
 
 void
 MidiRegionView::hide_region_editor ()
 {
 	RegionView::hide_region_editor ();
-	delete _editor;
-	_editor = nullptr;
 }
 
 void

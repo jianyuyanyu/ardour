@@ -179,7 +179,6 @@ public:
 	int contents_height() const { return (_height - TimeAxisViewItem::NAME_HIGHLIGHT_SIZE - 2); }
 
 	void connect_to_diskstream ();
-	bool pianoroll_window_deleted (GdkEventAny*);
 };
 
 

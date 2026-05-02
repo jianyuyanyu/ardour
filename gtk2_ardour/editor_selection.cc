@@ -1738,6 +1738,8 @@ Editor::region_selection_changed ()
 		assert (rv);
 		maybe_edit_region_in_bottom_pane (*rv);
 	}
+
+	EditingContext::region_selection_changed ();
 }
 
 void

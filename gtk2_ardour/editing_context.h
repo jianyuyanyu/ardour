@@ -75,6 +75,7 @@ class GridLines;
 class MidiRegionView;
 class MidiView;
 class MouseCursors;
+class PianorollWindow;
 class VerboseCursor;
 class TrackViewList;
 class Selection;
@@ -346,6 +347,7 @@ class EditingContext : public ARDOUR::SessionHandlePtr, public AxisViewProvider,
 	void reset_point_selection ();
 
 	virtual void point_selection_changed () = 0;
+	virtual void region_selection_changed ();
 
 	/** Set the mouse mode (gain, object, range, timefx etc.)
 	 * @param m Mouse mode (defined in editing_syms.inc.h)
@@ -540,6 +542,8 @@ class EditingContext : public ARDOUR::SessionHandlePtr, public AxisViewProvider,
 	bool have_draw_chord() const { return !_draw_chord_name.empty(); }
 
 	virtual void add_semitone_interval (int semitones);
+
+	void pianoroll_edit (std::shared_ptr<ARDOUR::MidiRegion>, std::shared_ptr<ARDOUR::MidiTrack>);
 
   protected:
 	std::string _name;
@@ -896,4 +900,6 @@ class EditingContext : public ARDOUR::SessionHandlePtr, public AxisViewProvider,
 	bool _dragging_playhead;
 	static std::vector<std::string> _chord_name_list;
 	std::string _draw_chord_name;
+
+	PianorollWindow* pianoroll_window;
 };

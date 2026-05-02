@@ -96,8 +96,8 @@ PianorollMidiView::PianorollMidiView (std::shared_ptr<ARDOUR::MidiTrack> mt,
 	 * events for the current_item.
 	 */
 
-	event_rect->Event.connect ([this] (GdkEvent* ev) { return midi_canvas_group_event (ev); });
-	parent.Event.connect ([this] (GdkEvent* ev) { return midi_canvas_group_event (ev); });
+	er_connection = event_rect->Event.connect ([this] (GdkEvent* ev) { return midi_canvas_group_event (ev); });
+	parent_connection = parent.Event.connect ([this] (GdkEvent* ev) { return midi_canvas_group_event (ev); });
 
 	_note_group->raise_to_top ();
 
@@ -108,6 +108,9 @@ PianorollMidiView::PianorollMidiView (std::shared_ptr<ARDOUR::MidiTrack> mt,
 
 PianorollMidiView::~PianorollMidiView ()
 {
+	er_connection.disconnect ();
+	parent_connection.disconnect ();
+
 	for (auto & [param,lane] : automation_map) {
 		delete lane;
 	}

@@ -1711,6 +1711,19 @@ Pianoroll::unset_trigger ()
 }
 
 void
+Pianoroll::replace_region (std::shared_ptr<ARDOUR::Region> region, std::shared_ptr<ARDOUR::MidiTrack> track)
+{
+	view_connections.drop_connections ();
+	for (auto & [region,view] : region_view_map) {
+		delete view;
+	}
+	region_view_map.clear ();
+
+	add_region (region, track);
+	set_region (region);
+}
+
+void
 Pianoroll::add_region (std::shared_ptr<ARDOUR::Region> region, std::shared_ptr<ARDOUR::MidiTrack> track)
 {
 	PianorollMidiView* new_view = new PianorollMidiView (track, *data_group, *no_scroll_group, *this, *bg);

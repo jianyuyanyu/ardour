@@ -25,6 +25,7 @@
 #include "ardour/legatize.h"
 #include "ardour/midi_region.h"
 #include "ardour/midi_source.h"
+#include "ardour/midi_track.h"
 #include "ardour/rc_configuration.h"
 #include "ardour/transpose.h"
 #include "ardour/quantize.h"
@@ -48,12 +49,14 @@
 #include "keyboard.h"
 #include "midi_region_view.h"
 #include "note_base.h"
+#include "pianoroll_window.h"
 #include "quantize_dialog.h"
 #include "rc_option_editor.h"
 #include "selection.h"
 #include "selection_memento.h"
 #include "transform_dialog.h"
 #include "transpose_dialog.h"
+#include "utils.h"
 #include "verbose_cursor.h"
 
 #include "pbd/i18n.h"
@@ -196,6 +199,7 @@ EditingContext::EditingContext (std::string const & name)
 	, minsec_nmarks (0)
 	, temporary_zoom_focus_change (false)
 	, _dragging_playhead (false)
+	, pianoroll_window (nullptr)
 {
 	using namespace Gtk::Menu_Helpers;
 
@@ -274,6 +278,7 @@ EditingContext::EditingContext (std::string const & name)
 	note_mode_button.set_active_color (UIConfiguration::instance().color ("alert:yellow"));
 
 	selection->PointsChanged.connect (sigc::mem_fun(*this, &EditingContext::point_selection_changed));
+	selection->RegionsChanged.connect (sigc::mem_fun(*this, &EditingContext::region_selection_changed));
 
 	for (int i = 0; i < 16; i++) {
 		char buf[4];
@@ -327,6 +332,8 @@ EditingContext::~EditingContext()
 	if (chord_actions) {
 		ActionManager::drop_action_group (chord_actions);
 	}
+
+	delete pianoroll_window;
 }
 
 void
@@ -4177,4 +4184,64 @@ Gtk::Menu*
 EditingContext::get_single_region_context_menu ()
 {
 	return nullptr;
+}
+
+void
+EditingContext::region_selection_changed ()
+{
+	if (!pianoroll_window || !pianoroll_window->is_mapped()) {
+		return;
+	}
+
+	bool have_set = false;
+
+	for (auto & rv : selection->regions) {
+		TimeAxisView& tav (rv->get_time_axis_view());
+		RouteTimeAxisView* rtav = dynamic_cast<RouteTimeAxisView*> (&tav);
+		if (!rtav) { /* how */
+			continue;
+		}
+
+		std::shared_ptr<MidiTrack> track = std::dynamic_pointer_cast<MidiTrack> (rtav->stripable());
+		if (!track) {
+			continue;
+		}
+
+		std::shared_ptr<MidiRegion> midi_region = std::dynamic_pointer_cast<MidiRegion> (rv->region());
+		if (!midi_region) {
+			continue;
+		}
+
+		if (!have_set) {
+			pianoroll_window->replace_region (track, midi_region);
+			have_set = true;
+		} else {
+			pianoroll_window->add_region (track, midi_region);
+		}
+	}
+}
+
+void
+EditingContext::pianoroll_edit (std::shared_ptr<MidiRegion> region, std::shared_ptr<MidiTrack> track)
+{
+	if (!pianoroll_window) {
+		pianoroll_window = new PianorollWindow (string_compose (_("Pianoroll: %1"), region->name()), track->session());
+		pianoroll_window->signal_delete_event().connect (sigc::bind (sigc::ptr_fun (ARDOUR_UI_UTILS::just_hide_it), pianoroll_window));
+	}
+
+	pianoroll_window->set_show_source (false);
+
+	if (selection->regions.size() == 1) {
+		pianoroll_window->replace_region (track, region);
+	} else {
+		pianoroll_window->replace_region (track, region);
+		for (auto & r : selection->regions) {
+			if (r->region() != region) {
+				// pianoroll_window->add (TRACK, r);
+			}
+		}
+	}
+
+	pianoroll_window->show_all ();
+	pianoroll_window->present ();
 }

@@ -147,4 +147,7 @@ class PianorollMidiView : public MidiView
 
 	void cut_copy_clear_one (AutomationLine& line, ::Selection& selection, Editing::CutCopyOp op);
 	void cut_copy_points (Editing::CutCopyOp op, Temporal::timepos_t const & earliest_time);
+
+	sigc::connection er_connection;
+	sigc::connection parent_connection;
 };

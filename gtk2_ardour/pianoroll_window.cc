@@ -39,6 +39,9 @@ PianorollWindow::PianorollWindow (std::string const & name, Session& s)
 	pianoroll->set_session (&s);
 	pianoroll->get_canvas_viewport()->set_size_request (1270, 700);
 
+	hpacker.pack_start (pianoroll->contents(), true, true);
+	pianoroll->contents().show ();
+
 	add (hpacker);
 	hpacker.show ();
 }
@@ -56,20 +59,22 @@ PianorollWindow::set_show_source (bool yn)
 }
 
 void
-PianorollWindow::set (std::shared_ptr<MidiTrack> track, std::shared_ptr<MidiRegion> region)
+PianorollWindow::add_region (std::shared_ptr<MidiTrack> track, std::shared_ptr<MidiRegion> region)
+{
+	pianoroll->add_region (region, track);
+}
+
+void
+PianorollWindow::set_region (std::shared_ptr<MidiTrack> track, std::shared_ptr<MidiRegion> region)
 {
 	pianoroll->add_region (region, track);
 	pianoroll->set_region (region);
+}
 
-	// delete region_editor;
-	// region_editor = new RegionEditor (pianoroll->session(), region);
-	// hpacker.pack_start (*region_editor, false, false);
-
-
-	hpacker.pack_start (pianoroll->contents(), true, true);
-
-	// region_editor->show ();
-	pianoroll->contents().show ();
+void
+PianorollWindow::replace_region (std::shared_ptr<MidiTrack> track, std::shared_ptr<MidiRegion> region)
+{
+	pianoroll->replace_region (region, track);
 }
 
 bool

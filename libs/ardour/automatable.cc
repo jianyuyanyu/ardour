@@ -213,7 +213,7 @@ Automatable::get_parameter_string (Evoral::Parameter param, bool just_name) cons
 	} else if (param.type() == InsertReturnLevel) {
 		return _("Return");
 	} else if (param.type() == TrimAutomation) {
-		return _("Gain|Trim");
+		return S_("Gain|Trim");
 	} else if (param.type() == MainOutVolume) {
 		return _("Master Volume");
 	} else if (param.type() == MuteAutomation) {

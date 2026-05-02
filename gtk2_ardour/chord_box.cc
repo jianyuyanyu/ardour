@@ -58,7 +58,7 @@ ChordBox::ChordBox (EditingContext& ec)
 	: editing_context (ec)
 	, triad_label (_("3-Note Chords (Triads)"))
 	, tetrad_label (_("4-Note Chords (Tetrads)"))
-	, pentad_label (_("5-Note Chords (Pentads)"))
+	, ext_label (_("Extended Chords"))
 	, inversion_label (_("Inversions"))
 	, drop_label (_("Drop Notes"))
 	, _root (0)
@@ -162,11 +162,11 @@ ChordBox::refill_tables ()
 {
 	Gtkmm2ext::container_clear (triad_table);
 	Gtkmm2ext::container_clear (tetrad_table);
-	Gtkmm2ext::container_clear (pentad_table);
+	Gtkmm2ext::container_clear (ext_table);
 
 	int tetrads = 0;
 	int triads = 0;
-	int pentads = 0;
+	int exts = 0;
 
 	for (auto & s : editing_context.chord_name_list()) {
 		ChordInfo const * ci = ChordProvider::by_short_name (s);
@@ -179,22 +179,22 @@ ChordBox::refill_tables ()
 			triads++;
 		} else if (ci->intervals.size() == 4) {
 			tetrads++;
-		} else if (ci->intervals.size() == 5) {
-			pentads++;
+		} else {
+			exts++;
 		}
 	}
 
 	triad_table.resize ((triads + 1) / 2, 2);
 	tetrad_table.resize ((tetrads + 1) / 2, 2);
-	pentad_table.resize ((pentads + 1) / 2, 2);
+	ext_table.resize ((exts + 1) / 2, 2);
 
 	fill_table (triad_table, editing_context.chord_name_list(), 3);
 	fill_table (tetrad_table, editing_context.chord_name_list(), 4);
-	fill_table (pentad_table, editing_context.chord_name_list(), 5);
+	fill_table (ext_table, editing_context.chord_name_list(), -5);
 }
 
 void
-ChordBox::fill_table (Gtk::Table& table, std::vector<std::string> const & names, size_t chord_size)
+ChordBox::fill_table (Gtk::Table& table, std::vector<std::string> const & names, int chord_size)
 {
 	using namespace Gtk;
 	using namespace Gtkmm2ext;
@@ -217,7 +217,12 @@ ChordBox::fill_table (Gtk::Table& table, std::vector<std::string> const & names,
 			continue;
 		}
 
-		if (ci->intervals.size() != chord_size) {
+		if (chord_size < 1) {
+			if ((int) ci->intervals.size() < -chord_size) {
+				++n;
+				continue;
+			}
+		} else if ((int) ci->intervals.size() != chord_size) {
 			++n;
 			continue;
 		}
@@ -335,7 +340,7 @@ ChordBox::build_western ()
 
 	triad_label.set_alignment (0.0, 0.5);
 	tetrad_label.set_alignment (0.0, 0.5);
-	pentad_label.set_alignment (0.0, 0.5);
+	ext_label.set_alignment (0.0, 0.5);
 	inversion_label.set_alignment (0.0, 0.5);
 	drop_label.set_alignment (0.0, 0.5);
 
@@ -346,8 +351,8 @@ ChordBox::build_western ()
 	western_vbox.pack_start (triad_table, false, false);
 	western_vbox.pack_start (tetrad_label, false, false);
 	western_vbox.pack_start (tetrad_table, false, false);
-	western_vbox.pack_start (pentad_label, false, false);
-	western_vbox.pack_start (pentad_table, false, false);
+	western_vbox.pack_start (ext_label, false, false);
+	western_vbox.pack_start (ext_table, false, false);
 	western_vbox.pack_start (inversion_label, false, false);
 	western_vbox.pack_start (inversion_table, false, false);
 	western_vbox.pack_start (drop_label, false, false);
@@ -418,8 +423,6 @@ ChordBox::tet12_edit_chord (GdkEventButton* ev, size_t n, int chord_size)
 	}
 
 	ChordInfo ci (cd.get_chord ());
-
-	std::cerr << "editing done, protected " << cd.is_protected () << std::endl;
 
 	if (cd.is_protected()) {
 		EditingContext::change_chord_list (n, ci.short_name);

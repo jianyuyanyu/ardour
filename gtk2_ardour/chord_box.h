@@ -61,21 +61,21 @@ class ChordBox : public Gtk::VBox, public ARDOUR::ChordProvider
 	Gtk::Label name_display;
 
 	void refill_tables ();
-	void fill_table (Gtk::Table& table, std::vector<std::string> const & names, size_t chord_size);
+	void fill_table (Gtk::Table& table, std::vector<std::string> const & names, int chord_size);
 	bool radio_ardour_button_hack (GdkEventButton* ev, ArdourWidgets::ArdourButton* button);
 
 	/* Western */
 
 	Gtk::Table triad_table;
 	Gtk::Table tetrad_table;
-	Gtk::Table pentad_table;
+	Gtk::Table ext_table;
 
 	Gtk::Table inversion_table;
 	Gtk::Table drop_table;
 
 	Gtk::Label triad_label;
 	Gtk::Label tetrad_label;
-	Gtk::Label pentad_label;
+	Gtk::Label ext_label;
 	Gtk::Label inversion_label;
 	Gtk::Label drop_label;
 

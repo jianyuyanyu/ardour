@@ -1605,7 +1605,7 @@ SessionDialog::deploy_demo_session ()
 
 	/* test if session exists */
 	if (Glib::file_test (session_folder (), Glib::FILE_TEST_EXISTS)) {
-		ArdourMessageDialog msg (_("A session with the given name alredy exists.\nPlease choose a different name or folder."), false, MESSAGE_ERROR);
+		ArdourMessageDialog msg (_("A session with the given name already exists.\nPlease choose a different name or folder."), false, MESSAGE_ERROR);
 		msg.run ();
 		return false;
 	}

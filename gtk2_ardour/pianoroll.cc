@@ -192,10 +192,10 @@ Pianoroll::set_editing_policy (EditingPolicy ep)
 	std::string txt;
 	switch (_editing_policy) {
 	case AllViews:
-		txt = _("All Views");
+		txt = _("All Regions");
 		break;
 	case ActiveView:
-		txt = _("Active View");
+		txt = _("Active Region");
 		break;
 	}
 

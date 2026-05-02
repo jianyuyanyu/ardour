@@ -72,7 +72,7 @@ PianorollWindow::set_region (std::shared_ptr<MidiTrack> track, std::shared_ptr<M
 	pianoroll->add_region (region, track);
 	pianoroll->set_region (region);
 
-	set_title (string_compose (_("Pianoroll: %1"), region->name()));
+	set_title (string_compose (_("%1 Pianoroll: %2"), PROGRAM_NAME, region->name()));
 }
 
 void

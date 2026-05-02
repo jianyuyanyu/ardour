@@ -206,8 +206,8 @@ CueEditor::initialize_region_ui_settings (RegionUISettings& rus)
 
 			rus.height = height;
 			rus.width = width;
-			rus.x = wx;
-			rus.y = wy;;
+			rus.x = wx - x;
+			rus.y = wy - y;
 		}
 	}
 }

@@ -45,7 +45,7 @@ ChordProvider::hash_intervals (ChordProvider::Intervals const & intervals)
 {
 	assert (!intervals.empty());
 
-	const int64_t max_interval = 23; /* maximum possible interval */
+	const int64_t max_interval = 25; /* one larger than max interval in semitones */
 	int64_t mult = max_interval;
 	int64_t ret = intervals[0];
 
@@ -79,7 +79,6 @@ ChordProvider::add_chord (ChordInfo const & new_chord)
 		if (new_chord.hashed == ci.hashed ||
 		    new_chord.canonical_name == ci.canonical_name ||
 		    new_chord.short_name == ci.short_name) {
-			std::cerr << "exists\n";
 			return false;
 		}
 	}

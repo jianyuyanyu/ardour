@@ -44,7 +44,7 @@ ChordDialog::ChordDialog (EditingContext& ec, ChordProvider& cp, int chord_size)
 	chord_list.set_column_title (0, _("Select a chord below"));
 
 	for (auto const & ci : ChordProvider::chord_info) {
-		if (chord_size < 0 || ci.intervals.size() == size_t (chord_size)) {
+		if ((chord_size < 0 && int (ci.intervals.size()) >= -chord_size) || ci.intervals.size() == size_t (chord_size)) {
 			names.push_back (ci.canonical_name.c_str());
 		}
 	}

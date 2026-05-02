@@ -590,7 +590,7 @@ RouteTimeAxisView::build_automation_action_menu (bool for_selection)
 	}
 
 	if (trim_track) {
-		items.push_back (CheckMenuElem (_("Trim"), sigc::mem_fun (*this, &RouteTimeAxisView::update_trim_track_visibility)));
+		items.push_back (CheckMenuElem (_("Gain|Trim"), sigc::mem_fun (*this, &RouteTimeAxisView::update_trim_track_visibility)));
 		trim_automation_item = dynamic_cast<Gtk::CheckMenuItem*> (&items.back ());
 		trim_automation_item->set_active (single_track_selected &&
 		                                  string_to<bool>(trim_track->gui_property ("visible")));

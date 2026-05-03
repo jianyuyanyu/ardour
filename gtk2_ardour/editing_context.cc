@@ -1566,7 +1566,8 @@ EditingContext::follow_playhead() const
 		return false;
 	}
 
-	return follow_playhead_action->get_active ();
+	/* Prevent follow playhead during the drag to be nice to the user */
+	return follow_playhead_action->get_active () && !_drags->active ();
 }
 
 double

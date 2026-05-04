@@ -9,31 +9,6 @@
     <Color name="alert:red" value="E06C75FF"/>  <!-- OneDark Red -->
     <Color name="alert:ruddy" value="BE5046FF"/>  <!-- OneDark Darker Red (for variety) -->
     <Color name="alert:yellow" value="E5C07BFF"/>  <!-- OneDark Yellow -->
-    <Color name="theme:bg" value="282C34FF"/>  <!-- OneDark Background (Dark) -->
-    <Color name="theme:bg1" value="2C313AFF"/>  <!-- Slightly lighter bg -->
-    <Color name="theme:bg2" value="21252BFF"/>  <!-- Even darker, near OneDark Black -->
-    <Color name="theme:contrasting" value="E06C75FF"/>  <!-- OneDark Red (play head) -->
-    <Color name="theme:contrasting clock" value="7AA87AFF"/>  <!-- OneDark Green (clock text) -->
-    <Color name="theme:contrasting less" value="7AA87AFF"/>  <!-- Muted green -->
-    <Color name="theme:contrasting selection" value="3E4452FF"/>  <!-- OneDark Selection (Visual selection bg) -->
-    <Color name="theme:contrasting alt" value="E5C07BFF"/>  <!-- OneDark Yellow/Gold (delta clock) -->
-    <Color name="neutral:backgroundest" value="181A1FFF"/>  <!-- OneDark Black (border) -->
-    <Color name="neutral:background" value="21252BFF"/>  <!-- OneDark Darker (audio track base) -->
-    <Color name="neutral:background2" value="3E4452FF"/>  <!-- OneDark Selection (range marker bar) -->
-    <Color name="neutral:midground" value="5C6370FF"/>  <!-- OneDark Comment Grey (grid line minor) -->
-    <Color name="neutral:foreground2" value="7F848EFF"/>  <!-- Lighter grey (marker track) -->
-    <Color name="neutral:foreground" value="ABB2BFFF"/>  <!-- OneDark Foreground (text/icons) -->
-    <Color name="neutral:foregroundest" value="C8CCD4FF"/>  <!-- Brighter white (grid line major) -->
-    <Color name="widget:bg" value="3E4452FF"/>  <!-- OneDark Selection (generic button) -->
-    <Color name="widget:blue" value="3a7cb2FF"/>  <!-- OneDark (slightly faded) Blue (processor fader fill) -->
-    <Color name="widget:blue lighter" value="7DC1F0FF"/>  <!-- Lighter variant of OneDark Blue -->
-    <Color name="widget:blue darker" value="2C384AFF"/>  <!-- Darker variant of OneDark Blue -->
-    <Color name="widget:gray" value="5C6370FF"/>  <!-- OneDark Comment Grey (processor fader) -->
-    <Color name="widget:green" value="7AA87AFF"/>  <!-- OneDark (slightly faded) Green (processor postfader) -->
-    <Color name="widget:green darker" value="3A4A3AFF"/>  <!-- Darker variant of OneDark Green -->
-    <Color name="widget:orange" value="D19A66FF"/>  <!-- OneDark Orange (tempo marker) -->
-    <Color name="widget:ruddy" value="BE5046FF"/>  <!-- OneDark Darker Red (processor prefader) -->
-    <Color name="widget:yellow" value="E5C07BFF"/>  <!-- OneDark Yellow (VU outline) -->
     <Color name="meter color0" value="3A4A3AFF"/>  <!-- Dark green -->
     <Color name="meter color1" value="4F6A4FFF"/>  <!-- Medium dark green -->
     <Color name="meter color2" value="6A8E6AFF"/>  <!-- Medium green -->
@@ -47,16 +22,41 @@
     <Color name="midi meter 52" value="E5C07BFF"/>  <!-- OneDark Yellow -->
     <Color name="midi meter 53" value="D19A66FF"/>  <!-- OneDark Orange -->
     <Color name="midi meter 54" value="CC7832FF"/>  <!-- Darker Orange -->
-    <Color name="pianoroll: velocity" value="E5C07BFF"/>  <!-- OneDark Yellow -->
+    <Color name="midi meter 55" value="D19A66FF"/>  <!-- OneDark Orange -->
+    <Color name="midi meter 56" value="E06C75FF"/>  <!-- OneDark Red -->
+    <Color name="neutral:background" value="21252BFF"/>  <!-- OneDark Darker (audio track base) -->
+    <Color name="neutral:background2" value="3E4452FF"/>  <!-- OneDark Selection (range marker bar) -->
+    <Color name="neutral:backgroundest" value="181A1FFF"/>  <!-- OneDark Black (border) -->
+    <Color name="neutral:foreground" value="ABB2BFFF"/>  <!-- OneDark Foreground (text/icons) -->
+    <Color name="neutral:foreground2" value="7F848EFF"/>  <!-- Lighter grey (marker track) -->
+    <Color name="neutral:foregroundest" value="C8CCD4FF"/>  <!-- Brighter white (grid line major) -->
+    <Color name="neutral:midground" value="5C6370FF"/>  <!-- OneDark Comment Grey (grid line minor) -->
     <Color name="pianoroll: insensitive bender line" value="61AFEF84"/>  <!-- OneDark Blue (transparent) -->
-    <Color name="pianoroll: insensitive pressure line" value="56B6C284"/>  <!-- OneDark Cyan (transparent) -->
-    <Color name="pianoroll: insensitive modulation line" value="98C37984"/>  <!-- OneDark Green (transparent) -->
     <Color name="pianoroll: insensitive expression line" value="E5C07B84"/>  <!-- OneDark Yellow (transparent) -->
+    <Color name="pianoroll: insensitive modulation line" value="98C37984"/>  <!-- OneDark Green (transparent) -->
+    <Color name="pianoroll: insensitive pressure line" value="56B6C284"/>  <!-- OneDark Cyan (transparent) -->
     <Color name="pianoroll: user1 line" value="C678DD84"/>  <!-- OneDark Purple (transparent) -->
     <Color name="pianoroll: user2 line" value="61AFEF84"/>  <!-- OneDark Blue (transparent) -->
     <Color name="pianoroll: user3 line" value="56B6C284"/>  <!-- OneDark Cyan (transparent) -->
-    <Color name="midi meter 55" value="D19A66FF"/>  <!-- OneDark Orange -->
-    <Color name="midi meter 56" value="E06C75FF"/>  <!-- OneDark Red -->
+    <Color name="pianoroll: velocity" value="E5C07BFF"/>  <!-- OneDark Yellow -->
+    <Color name="theme:bg" value="282C34FF"/>  <!-- OneDark Background (Dark) -->
+    <Color name="theme:bg1" value="2C313AFF"/>  <!-- Slightly lighter bg -->
+    <Color name="theme:bg2" value="21252BFF"/>  <!-- Even darker, near OneDark Black -->
+    <Color name="theme:contrasting" value="E06C75FF"/>  <!-- OneDark Red (play head) -->
+    <Color name="theme:contrasting alt" value="E5C07BFF"/>  <!-- OneDark Yellow/Gold (delta clock) -->
+    <Color name="theme:contrasting clock" value="7AA87AFF"/>  <!-- OneDark Green (clock text) -->
+    <Color name="theme:contrasting less" value="7AA87AFF"/>  <!-- Muted green -->
+    <Color name="theme:contrasting selection" value="3E4452FF"/>  <!-- OneDark Selection (Visual selection bg) -->
+    <Color name="widget:bg" value="3E4452FF"/>  <!-- OneDark Selection (generic button) -->
+    <Color name="widget:blue" value="3a7cb2FF"/>  <!-- OneDark (slightly faded) Blue (processor fader fill) -->
+    <Color name="widget:blue darker" value="2C384AFF"/>  <!-- Darker variant of OneDark Blue -->
+    <Color name="widget:blue lighter" value="7DC1F0FF"/>  <!-- Lighter variant of OneDark Blue -->
+    <Color name="widget:gray" value="5C6370FF"/>  <!-- OneDark Comment Grey (processor fader) -->
+    <Color name="widget:green" value="7AA87AFF"/>  <!-- OneDark (slightly faded) Green (processor postfader) -->
+    <Color name="widget:green darker" value="3A4A3AFF"/>  <!-- Darker variant of OneDark Green -->
+    <Color name="widget:orange" value="D19A66FF"/>  <!-- OneDark Orange (tempo marker) -->
+    <Color name="widget:ruddy" value="BE5046FF"/>  <!-- OneDark Darker Red (processor prefader) -->
+    <Color name="widget:yellow" value="E5C07BFF"/>  <!-- OneDark Yellow (VU outline) -->
   </Colors>
   <ColorAliases>
     <ColorAlias name="active crossfade" alias="neutral:foreground"/>
@@ -67,9 +67,9 @@
     <ColorAlias name="audio automation track fill" alias="theme:bg"/>
     <ColorAlias name="audio bus base" alias="widget:blue darker"/>
     <ColorAlias name="audio master bus base" alias="neutral:backgroundest"/>
-    <ColorAlias name="automation line insensitive" alias="neutral:foreground2"/>
     <ColorAlias name="audio track base" alias="neutral:background"/>
     <ColorAlias name="automation line" alias="alert:green"/>
+    <ColorAlias name="automation line insensitive" alias="neutral:foreground2"/>
     <ColorAlias name="automation track outline" alias="theme:bg1"/>
     <ColorAlias name="big clock active: background" alias="neutral:backgroundest"/>
     <ColorAlias name="big clock active: cursor" alias="theme:contrasting alt"/>
@@ -99,10 +99,10 @@
     <ColorAlias name="crossfade editor point outline" alias="alert:blue"/>
     <ColorAlias name="crossfade editor wave" alias="neutral:foregroundest"/>
     <ColorAlias name="crossfade line" alias="neutral:backgroundest"/>
-    <ColorAlias name="cue editor start rect fill" alias="neutral:midground"/>
-    <ColorAlias name="cue editor start rect outline" alias="alert:orange"/>
     <ColorAlias name="cue editor end rect fill" alias="neutral:midground"/>
     <ColorAlias name="cue editor end rect outline" alias="alert:orange"/>
+    <ColorAlias name="cue editor start rect fill" alias="neutral:midground"/>
+    <ColorAlias name="cue editor start rect outline" alias="alert:orange"/>
     <ColorAlias name="edit point" alias="alert:blue"/>
     <ColorAlias name="entered automation line" alias="widget:orange"/>
     <ColorAlias name="entered gain line" alias="widget:orange"/>
@@ -473,10 +473,10 @@
     <ColorAlias name="time axis view item base" alias="widget:gray"/>
     <ColorAlias name="time stretch fill" alias="theme:contrasting less"/>
     <ColorAlias name="time stretch outline" alias="widget:gray"/>
+    <ColorAlias name="track separator" alias="neutral:backgroundest"/>
     <ColorAlias name="tracknumber label: fill" alias="theme:bg"/>
     <ColorAlias name="tracknumber label: fill active" alias="neutral:background2"/>
     <ColorAlias name="tracknumber label: led active" alias="alert:red"/>
-    <ColorAlias name="track separator" alias="neutral:backgroundest"/>
     <ColorAlias name="transport active option button: fill" alias="widget:bg"/>
     <ColorAlias name="transport active option button: fill active" alias="alert:green"/>
     <ColorAlias name="transport active option button: led active" alias="alert:green"/>
@@ -531,10 +531,10 @@
     <Modifier name="gain line inactive" modifier="= alpha:0.7725"/>
     <Modifier name="ghost track base" modifier="= alpha:0.640782"/>
     <Modifier name="ghost track midi fill" modifier="= alpha:0.3"/>
+    <Modifier name="grid line" modifier="= alpha:1.0"/>
     <Modifier name="inactive crossfade" modifier="= alpha:0.4666"/>
     <Modifier name="loop rectangle" modifier="= alpha:0.5"/>
     <Modifier name="marker bar" modifier="= alpha:0.5"/>
-    <Modifier name="grid line" modifier="= alpha:1.0"/>
     <Modifier name="midi note" modifier="= alpha:0.8"/>
     <Modifier name="midi note velocity text" modifier="= alpha:0.4666"/>
     <Modifier name="midi patch change fill" modifier="= alpha:0.6274"/>
@@ -546,6 +546,7 @@
     <Modifier name="piano roll white" modifier="= alpha:0.2"/>
     <Modifier name="recording rect" modifier="= alpha:0.25"/>
     <Modifier name="region alpha" modifier="= alpha:0.75"/>
+    <Modifier name="region mark" modifier="= alpha:1.0"/>
     <Modifier name="scroomer alpha" modifier="= alpha:0.25"/>
     <Modifier name="selected midi note" modifier="= alpha:0.7529"/>
     <Modifier name="selection rect" modifier="= alpha:0.15"/>
@@ -555,9 +556,8 @@
     <Modifier name="summary track alpha" modifier="= alpha:0.5"/>
     <Modifier name="summary view rect alpha" modifier="= alpha:0.15"/>
     <Modifier name="time axis view item base" modifier="= alpha:0.7"/>
-    <Modifier name="transparent region base" modifier="= alpha:0.6"/>
     <Modifier name="time stretch fill" modifier="= alpha:0.5"/>
+    <Modifier name="transparent region base" modifier="= alpha:0.6"/>
     <Modifier name="verbose canvas cursor" modifier="= alpha:0.4666"/>
-    <Modifier name="region mark" modifier="= alpha:1.0"/>
   </Modifiers>
 </Ardour>

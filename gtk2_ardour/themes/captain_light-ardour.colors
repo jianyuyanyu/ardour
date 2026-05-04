@@ -31,6 +31,14 @@
     <Color name="neutral:foreground2" value="ccccccff"/>
     <Color name="neutral:foregroundest" value="313131ff"/>
     <Color name="neutral:midground" value="7f7f7fff"/>
+    <Color name="pianoroll: insensitive bender line" value="96b2df84"/>
+    <Color name="pianoroll: insensitive expression line" value="dfc59684"/>
+    <Color name="pianoroll: insensitive modulation line" value="afdf9684"/>
+    <Color name="pianoroll: insensitive pressure line" value="96dfc984"/>
+    <Color name="pianoroll: user1 line" value="df96b084"/>
+    <Color name="pianoroll: user2 line" value="bc96df84"/>
+    <Color name="pianoroll: user3 line" value="9699df84"/>
+    <Color name="pianoroll: velocity" value="ff9408ff"/>
     <Color name="theme:bg" value="f2f1f3ff"/>
     <Color name="theme:bg1" value="969696ff"/>
     <Color name="theme:bg2" value="dadadaff"/>
@@ -47,14 +55,6 @@
     <Color name="widget:green darker" value="264542ff"/>
     <Color name="widget:orange" value="904010ff"/>
     <Color name="widget:ruddy" value="3650bfff"/>    
-    <Color name="pianoroll: velocity" value="ff9408ff"/>
-    <Color name="pianoroll: insensitive bender line" value="96b2df84"/>
-    <Color name="pianoroll: insensitive pressure line" value="96dfc984"/>
-    <Color name="pianoroll: insensitive modulation line" value="afdf9684"/>
-    <Color name="pianoroll: insensitive expression line" value="dfc59684"/>
-    <Color name="pianoroll: user1 line" value="df96b084"/>
-    <Color name="pianoroll: user2 line" value="bc96df84"/>
-    <Color name="pianoroll: user3 line" value="9699df84"/>
   </Colors>
   <ColorAliases>
     <ColorAlias name="active crossfade" alias="neutral:foreground"/>
@@ -98,10 +98,10 @@
     <ColorAlias name="crossfade editor point outline" alias="alert:blue"/>
     <ColorAlias name="crossfade editor wave" alias="neutral:foregroundest"/>
     <ColorAlias name="crossfade line" alias="neutral:backgroundest"/>
-    <ColorAlias name="cue editor start rect fill" alias="neutral:midground"/>
-    <ColorAlias name="cue editor start rect outline" alias="alert:orange"/>
     <ColorAlias name="cue editor end rect fill" alias="neutral:midground"/>
     <ColorAlias name="cue editor end rect outline" alias="alert:orange"/>
+    <ColorAlias name="cue editor start rect fill" alias="neutral:midground"/>
+    <ColorAlias name="cue editor start rect outline" alias="alert:orange"/>
     <ColorAlias name="edit point" alias="alert:blue"/>
     <ColorAlias name="entered automation line" alias="widget:orange"/>
     <ColorAlias name="entered gain line" alias="widget:orange"/>
@@ -473,10 +473,10 @@
     <ColorAlias name="time axis view item base" alias="widget:gray"/>
     <ColorAlias name="time stretch fill" alias="theme:contrasting less"/>
     <ColorAlias name="time stretch outline" alias="widget:gray"/>
+    <ColorAlias name="track separator" alias="neutral:backgroundest"/>
     <ColorAlias name="tracknumber label: fill" alias="theme:bg"/>
     <ColorAlias name="tracknumber label: fill active" alias="neutral:background2"/>
     <ColorAlias name="tracknumber label: led active" alias="alert:red"/>
-    <ColorAlias name="track separator" alias="neutral:backgroundest"/>
     <ColorAlias name="transport active option button: fill" alias="widget:bg"/>
     <ColorAlias name="transport active option button: fill active" alias="alert:green"/>
     <ColorAlias name="transport active option button: led active" alias="alert:green"/>
@@ -524,8 +524,8 @@
     <Modifier name="automation line fill" modifier="= alpha:0.29999999999999999"/>
     <Modifier name="automation track fill" modifier="= alpha:0.29999999999999999"/>
     <Modifier name="covered region base" modifier="= alpha:0.69999999999999996"/>
-    <Modifier name="cue boundary alpha" modifier="= alpha:0.3"/>
     <Modifier name="crossfade alpha" modifier="= alpha:0.18029999999999999"/>
+    <Modifier name="cue boundary alpha" modifier="= alpha:0.3"/>
     <Modifier name="dragging region" modifier="= alpha:0.5"/>
     <Modifier name="editable region" modifier="= alpha:0.14999999999999999"/>
     <Modifier name="gain line inactive" modifier="= alpha:0.77249999999999996"/>

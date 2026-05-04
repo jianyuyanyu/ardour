@@ -17,9 +17,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <string>
-
-#include "gtkmm2ext/gtk_ui.h"
 #include "pbd/controllable.h"
 
 #include "widgets/ardour_fader.h"
@@ -40,19 +37,13 @@ SliderController::SliderController (Gtk::Adjustment *adj, std::shared_ptr<PBD::C
 	, _spin_ignore (false)
 {
 	if (_ctrl) {
-		// TODO consider a more generic method similar to
-		// get_user_string() or value_as_string() for numeric entry.
+		_spin_adj.set_lower (_ctrl->numeric_entry_convert (_ctrl->internal_to_interface (_ctrl->lower ()), true));
+		_spin_adj.set_upper (_ctrl->numeric_entry_convert (_ctrl->internal_to_interface (_ctrl->upper ()), true));
 		if (_ctrl->is_gain_like()) {
-			/* use a slightly lower threadhold than ardour/dB.h to map -infinity <> -320 */
-			float lower = _ctrl->lower () > 1e-16 ? 20.0f * log10f (_ctrl->lower ()) : -320.0f;
-			float upper = _ctrl->upper () > 1e-16 ? 20.0f * log10f (_ctrl->upper ()) : -320.0f;
-			_spin_adj.set_lower (lower);
-			_spin_adj.set_upper (upper);
-			_spin_adj.set_step_increment(0.1);
-			_spin_adj.set_page_increment(1.0);
+			_spin_adj.set_step_increment (0.1);
+			_spin_adj.set_page_increment (1.0);
 		} else {
-			_spin_adj.set_lower (_ctrl->lower ());
-			_spin_adj.set_upper (_ctrl->upper ());
+			// TODO this may need work for some future numeric_entry_convert()
 			_spin_adj.set_step_increment(_ctrl->interface_to_internal(adj->get_step_increment()) - _ctrl->lower ());
 			_spin_adj.set_page_increment(_ctrl->interface_to_internal(adj->get_page_increment()) - _ctrl->lower ());
 		}
@@ -106,13 +97,7 @@ SliderController::ctrl_adjusted ()
 	if (_spin_ignore) return;
 	_ctrl_ignore = true;
 
-	if (_ctrl->is_gain_like ()) {
-		float coeff = _ctrl->interface_to_internal (_ctrl_adj->get_value());
-		float db = coeff > 1e-16 ? 20.0f * log10f (coeff) : -320.0f;
-		_spin_adj.set_value (db);
-	} else {
-		_spin_adj.set_value (_ctrl->interface_to_internal (_ctrl_adj->get_value()));
-	}
+	_spin_adj.set_value (_ctrl->numeric_entry_convert (_ctrl_adj->get_value(), true));
 	_ctrl_ignore = false;
 }
 
@@ -122,13 +107,7 @@ SliderController::spin_adjusted ()
 	assert (_ctrl); // only used w/BarController
 	if (_ctrl_ignore) return;
 	_spin_ignore = true;
-	if (_ctrl->is_gain_like ()) {
-		float db = _spin_adj.get_value();
-	  float coeff = db > -320.f ? pow (10.0f, db * 0.05f) : 0.0f;
-		_ctrl_adj->set_value(_ctrl->internal_to_interface (coeff));
-	} else {
-		_ctrl_adj->set_value(_ctrl->internal_to_interface (_spin_adj.get_value()));
-	}
+	_ctrl_adj->set_value (_ctrl->numeric_entry_convert (_spin_adj.get_value (), false));
 	_spin_ignore = false;
 }
 

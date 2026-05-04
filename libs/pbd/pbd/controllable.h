@@ -137,6 +137,8 @@ public:
 
 	virtual std::string get_user_string() const { return std::string(); }
 
+	virtual float numeric_entry_convert (float, bool to_user_value);
+
 	PBD::Signal<void()> LearningFinished;
 
 	static PBD::Signal<bool(std::weak_ptr<PBD::Controllable> )> StartLearning;
@@ -181,11 +183,14 @@ protected:
 		TouchChanged (); /* EMIT SIGNAL */
 	}
 
+	std::function<float (float, bool)> _numeric_entry_convert;
+
 private:
 	std::string _name;
 	std::string _units;
 	Flag        _flags;
 	bool        _touching;
+
 
 	typedef std::set<PBD::Controllable*> Controllables;
 

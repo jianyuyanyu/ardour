@@ -20,6 +20,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <cmath>
+
 #include "pbd/controllable.h"
 #include "pbd/enumwriter.h"
 #include "pbd/xml++.h"
@@ -111,6 +113,35 @@ void
 Controllable::clear_flag (Flag f)
 {
 	_flags = Flag ((int)_flags & ~f);
+}
+
+float
+Controllable::numeric_entry_convert (float val, bool to_user_value)
+{
+	if (_numeric_entry_convert) {
+		if (to_user_value) {
+			return _numeric_entry_convert (interface_to_internal (val), true);
+		}else {
+			return internal_to_interface (_numeric_entry_convert (val, false));
+		}
+	} else if (is_gain_like ()) {
+		/* the c'tor could set up a _numeric_entry_convert std::function instead */
+		if (to_user_value) {
+			float coeff = interface_to_internal (val);
+			float db = coeff > 1e-16 ? 20.0f * log10f (coeff) : -320.0f;
+			return db;
+		} else {
+			float db = val;
+			float coeff = db > -320.f ? powf (10.0f, db * 0.05f) : 0.0f;
+			return internal_to_interface (coeff);
+		}
+	} else {
+		if (to_user_value) {
+			return interface_to_internal (val);
+		} else {
+			return internal_to_interface (val);
+		}
+	}
 }
 
 void

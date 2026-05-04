@@ -1114,7 +1114,7 @@ MidiView::drop_selected_chord (std::vector<int> const & which_notes)
 		return;
 	}
 
-	Evoral::Sequence<Temporal::Beats>::NoteNumberComparator sorter;
+	Evoral::Sequence<Temporal::Beats>::ReverseNoteNumberComparator sorter;
 	std::vector<std::shared_ptr<NoteType> > notes;
 
 	for (auto & s : _selection) {

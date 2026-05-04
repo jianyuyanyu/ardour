@@ -170,7 +170,7 @@ UIConfiguration::parameter_changed (string param)
 void
 UIConfiguration::reset_gtk_theme ()
 {
-	std::string color_scheme_string("gtk_color_scheme = \"");
+	std::string color_scheme_string;
 
 	for (ColorAliases::iterator g = color_aliases.begin(); g != color_aliases.end(); ++g) {
 

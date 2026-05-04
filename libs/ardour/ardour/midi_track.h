@@ -77,7 +77,11 @@ public:
 			    std::shared_ptr<AutomationList> al = std::shared_ptr<AutomationList>())
 			: AutomationControl (route->session(), param, ParameterDescriptor(param), al)
 			, _route (route)
-		{}
+		{
+			if (param.type() == MidiPitchBenderAutomation) {
+				_numeric_entry_convert = [](double val, bool to_user) { return to_user ? val - 8192 : val + 8192; };
+			}
+		}
 
 		bool writable() const { return true; }
 		void restore_value ();

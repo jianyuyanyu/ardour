@@ -2691,13 +2691,6 @@ MidiView::delete_note (std::shared_ptr<NoteType> n)
 }
 
 void
-MidiView::clear_selection ()
-{
-	clear_note_selection ();
-	end_note_splitting ();
-}
-
-void
 MidiView::clear_selection_internal ()
 {
 	DEBUG_TRACE(DEBUG::Selection, "MRV::clear_selection_internal\n");
@@ -2709,6 +2702,14 @@ MidiView::clear_selection_internal ()
 		ghost_sync_selection (note);
 	}
 	_selection.clear();
+}
+
+void
+MidiView::clear_selection ()
+{
+	clear_note_selection ();
+	end_note_splitting ();
+	_editing_context.get_selection().clear ();
 }
 
 void

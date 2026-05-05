@@ -482,8 +482,15 @@ MidiView::midi_canvas_group_event (GdkEvent* ev)
 
 	switch (ev->type) {
 	case GDK_ENTER_NOTIFY:
+		_last_event_x = ev->crossing.x;
+		_last_event_y = ev->crossing.y;
+		enter_notify (&ev->crossing);
+		break;
+
 	case GDK_LEAVE_NOTIFY:
-		/* we care only about note group enter/leave, which is handled by ::note_group_event () */
+		_last_event_x = ev->crossing.x;
+		_last_event_y = ev->crossing.y;
+		leave_notify (&ev->crossing);
 		break;
 
 	case GDK_SCROLL:

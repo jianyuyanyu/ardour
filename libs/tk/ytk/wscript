@@ -287,6 +287,7 @@ def build(bld):
                             'GTK_SYSCONFDIR="' + bld.env['SYSCONFDIR'] + '"',
                             'GTK_DATA_DIR="' + bld.env['DATADIR'] + '"',
                             'GTK_LIBDIR="' + bld.env['LIBDIR'] + '"',
+                            'GTK_LOCALEDIR="' + bld.env['LOCALEDIR'] + '"',
                           ]
     obj.vnum            = LIBYDK_VERSION
     obj.install_path    = bld.env['LIBDIR']

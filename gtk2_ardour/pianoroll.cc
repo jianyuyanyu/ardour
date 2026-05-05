@@ -1838,6 +1838,7 @@ Pianoroll::set_region (std::shared_ptr<ARDOUR::Region> region)
 	view_connections.drop_connections ();
 	_update_connection.disconnect ();
 	selection_connection.disconnect ();
+	midi_inspector->set_region (_session, nullptr);
 
 	if (!region) {
 		return;
@@ -1908,6 +1909,7 @@ Pianoroll::set_region (std::shared_ptr<ARDOUR::Region> region)
 	}
 
 	region_dropdown.set_active (region->name());
+	midi_inspector->set_region (_session, _active_view->midi_region());
 }
 
 void

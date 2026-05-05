@@ -16,15 +16,23 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+#include <ardour/midi_region.h>
+
 #include "chord_box.h"
 #include "midi_inspector.h"
 #include "ui_config.h"
+#include "region_editor.h"
 #include "quantize_dialog.h"
+
 #include "pbd/i18n.h"
 
+using namespace ARDOUR;
+
 MidiInspector::MidiInspector (EditingContext& ec)
-	: chord_expander (_("Chord Editing"))
+	: region_editor (nullptr)
+	, chord_expander (_("Chord Editing"))
 	, quantize_expander (_("Quantize"))
+	, region_expander (_("Region Properties"))
 {
 	chord_box = manage (new ChordBox (ec));
 	chord_expander.add (*chord_box);
@@ -34,9 +42,23 @@ MidiInspector::MidiInspector (EditingContext& ec)
 
 	pack_start (chord_expander, false, false);
 	pack_start (quantize_expander, false, false);
+	pack_start (region_expander, false, false);
 
 	set_border_width (12);
-	UIConfiguration::instance().DPIReset.connect ([this]() { queue_resize(); });}
+	UIConfiguration::instance().DPIReset.connect ([this]() { queue_resize(); });
+}
+
+void
+MidiInspector::set_region (Session* s, std::shared_ptr<MidiRegion> mr)
+{
+	if (mr) {
+		region_editor = manage (new RegionEditor (s, mr));
+		region_expander.add (*region_editor);
+	} else if (region_editor) {
+		region_expander.remove (); /* will delete */
+		region_editor = nullptr;
+	}
+}
 
 void
 MidiInspector::on_size_request (Gtk::Requisition* req)

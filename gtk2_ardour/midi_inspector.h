@@ -36,4 +36,6 @@ class MidiInspector : public Gtk::VBox
   private:
 	Gtk::Expander chord_expander;
 	Gtk::Expander quantize_expander;
+
+	void on_size_request (Gtk::Requisition*);
 };

@@ -1657,9 +1657,15 @@ MidiView::view_changed()
 }
 
 bool
+MidiView::should_be_editable (NoteBase const * ev) const
+{
+	return _sensitive && (ev != _ghost_note) && ((_visible_channel < 0) || (ev->note()->channel() == _visible_channel));
+}
+
+bool
 MidiView::note_editable (NoteBase const * ev) const
 {
-	return !ev->item()->ignore_events() && (ev != _ghost_note) && ((_visible_channel < 0) || (ev->note()->channel() == _visible_channel));
+	return _sensitive && should_be_editable (ev);
 }
 
 void
@@ -2147,7 +2153,7 @@ MidiView::update_sustained (Note* ev)
 	}
 
 	color_note (ev, note->channel());
-	ev->set_ignore_events (!note_editable (ev));
+	ev->set_ignore_events (!should_be_editable (ev));
 }
 
 void
@@ -2299,7 +2305,7 @@ MidiView::update_hit (Hit* ev)
 	ev->set_outline_color(ev->calculate_outline(base_col, ev->selected()));
 
 	color_note (ev, _visible_channel);
-	ev->set_ignore_events (!note_editable (ev));
+	ev->set_ignore_events (!should_be_editable (ev));
 }
 
 /** Add a MIDI note to the view (with length).
@@ -5886,7 +5892,9 @@ MidiView::set_visible_channel (int chn, bool clear_selection)
 
 		if (gui->item()->visible()) {
 			color_note (gui, note->channel());
-			gui->set_ignore_events (!note_editable (gui));
+			if (_sensitive) {
+				gui->set_ignore_events (!should_be_editable (gui));
+			}
 		}
 	}
 

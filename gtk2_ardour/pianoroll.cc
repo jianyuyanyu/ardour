@@ -1747,6 +1747,22 @@ Pianoroll::add_region (std::shared_ptr<ARDOUR::Region> region, std::shared_ptr<A
 }
 
 void
+Pianoroll::remove_regions ()
+{
+	std::vector<MidiView*> mvs;
+	for (auto & [region,view] : region_view_map) {
+		mvs.push_back (view);
+	}
+
+	region_view_map.clear ();
+	set_region (nullptr);
+
+	for (auto & mv : mvs) {
+		delete mv;
+	}
+}
+
+void
 Pianoroll::remove_region (std::shared_ptr<ARDOUR::Region> region)
 {
 	auto rvm = region_view_map.find (region);

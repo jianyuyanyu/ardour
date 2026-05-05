@@ -4206,6 +4206,8 @@ EditingContext::region_selection_changed ()
 		return;
 	}
 
+	pianoroll_window->remove_regions ();
+
 	std::vector<MidiRegionView*> midi_region_views;
 	std::set<Temporal::Beats> positions;
 

@@ -240,6 +240,7 @@ MidiView::set_sensitive (bool yn)
 		gui->item().set_ignore_events (!yn);
 	}
 
+	color_handler ();
 	show_start (yn);
 	show_end (yn);
 
@@ -261,8 +262,6 @@ void
 MidiView::show_start (bool yn)
 {
 	if (!yn) {
-		delete _start_boundary_rect;
-		_start_boundary_rect = nullptr;
 		return;
 	}
 

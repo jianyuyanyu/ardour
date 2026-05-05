@@ -4139,6 +4139,8 @@ EditingContext::set_minsec_ruler_scale (samplepos_t lower, samplepos_t upper)
 void
 EditingContext::scroll_left_step ()
 {
+	EC_LOCAL_TEMPO_SCOPE;
+
 	samplepos_t xdelta = (current_page_samples() / 8);
 
 	if (_leftmost_sample > xdelta) {
@@ -4152,6 +4154,8 @@ EditingContext::scroll_left_step ()
 void
 EditingContext::scroll_right_step ()
 {
+	EC_LOCAL_TEMPO_SCOPE;
+
 	samplepos_t xdelta = (current_page_samples() / 8);
 
 	if (max_samplepos - xdelta > _leftmost_sample) {
@@ -4164,6 +4168,8 @@ EditingContext::scroll_right_step ()
 void
 EditingContext::scroll_left_half_page ()
 {
+	EC_LOCAL_TEMPO_SCOPE;
+
 	samplepos_t xdelta = (current_page_samples() / 2);
 	if (_leftmost_sample > xdelta) {
 		reset_x_origin (_leftmost_sample - xdelta);
@@ -4175,6 +4181,8 @@ EditingContext::scroll_left_half_page ()
 void
 EditingContext::scroll_right_half_page ()
 {
+	EC_LOCAL_TEMPO_SCOPE;
+
 	samplepos_t xdelta = (current_page_samples() / 2);
 	if (max_samplepos - xdelta > _leftmost_sample) {
 		reset_x_origin (_leftmost_sample + xdelta);
@@ -4192,6 +4200,8 @@ EditingContext::get_single_region_context_menu ()
 void
 EditingContext::region_selection_changed ()
 {
+	EC_LOCAL_TEMPO_SCOPE;
+
 	if (!pianoroll_window || selection->regions.empty()) {
 		return;
 	}
@@ -4264,6 +4274,8 @@ EditingContext::region_selection_changed ()
 void
 EditingContext::pianoroll_edit ()
 {
+	EC_LOCAL_TEMPO_SCOPE;
+
 	if (!pianoroll_window) {
 		pianoroll_window = new PianorollWindow (_("Pianoroll Window"), *_session);
 		pianoroll_window->signal_delete_event().connect (sigc::bind (sigc::ptr_fun (ARDOUR_UI_UTILS::just_hide_it), pianoroll_window));

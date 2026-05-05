@@ -128,7 +128,6 @@
     <ColorAlias name="grid line micro" alias="arc-foreground-dark"/>
     <ColorAlias name="grid line minor" alias="arc-foreground"/>
     <ColorAlias name="group tab base" alias="arc-background-dark"/>
-    <ColorAlias name="gtk_arm" alias="arc-red"/>
     <ColorAlias name="gtk_audio_bus" alias="arc-background-blue"/>
     <ColorAlias name="gtk_audio_track" alias="arc-background"/>
     <ColorAlias name="gtk_automation_track_header" alias="arc-background"/>
@@ -153,17 +152,8 @@
     <ColorAlias name="gtk_lightest" alias="arc-foreground"/>
     <ColorAlias name="gtk_midi_channel_selector" alias="arc-blue"/>
     <ColorAlias name="gtk_midi_track" alias="arc-background-teal"/>
-    <ColorAlias name="gtk_monitor" alias="arc-orange"/>
     <ColorAlias name="gtk_mono" alias="arc-foreground-light"/>
     <ColorAlias name="gtk_mute" alias="arc-yellow"/>
-    <ColorAlias name="gtk_not_so_bright_indicator" alias="arc-red"/>
-    <ColorAlias name="gtk_processor_fader" alias="arc-gray"/>
-    <ColorAlias name="gtk_processor_fader_frame" alias="arc-foreground-dark"/>
-    <ColorAlias name="gtk_processor_frame_selected" alias="arc-red"/>
-    <ColorAlias name="gtk_processor_postfader" alias="arc-green"/>
-    <ColorAlias name="gtk_processor_postfader_frame" alias="arc-green"/>
-    <ColorAlias name="gtk_processor_prefader" alias="arc-red-dark"/>
-    <ColorAlias name="gtk_processor_prefader_frame" alias="arc-red-dark"/>
     <ColorAlias name="gtk_scrollbar_slider" alias="arc-background-light"/>
     <ColorAlias name="gtk_send_bg" alias="arc-background"/>
     <ColorAlias name="gtk_send_fg" alias="arc-blue"/>
@@ -172,7 +162,6 @@
     <ColorAlias name="gtk_texts" alias="arc-foreground-light"/>
     <ColorAlias name="gtk_track_header_inactive" alias="arc-background"/>
     <ColorAlias name="gtk_track_header_selected" alias="arc-blue"/>
-    <ColorAlias name="image track" alias="arc-foreground"/>
     <ColorAlias name="inactive crossfade" alias="arc-red"/>
     <ColorAlias name="inactive fade handle" alias="arc-foreground"/>
     <ColorAlias name="inactive group tab" alias="arc-background"/>
@@ -192,17 +181,12 @@
     <ColorAlias name="lock button: fill active" alias="arc-background-light"/>
     <ColorAlias name="lock button: led active" alias="arc-red"/>
     <ColorAlias name="lua action button: fill" alias="arc-background-light"/>
-    <ColorAlias name="mapping bar" alias="arc-background-light"/>
     <ColorAlias name="marker bar" alias="arc-background-light"/>
     <ColorAlias name="marker bar separator" alias="arc-background-dark"/>
-    <ColorAlias name="marker drag line" alias="arc-green"/>
     <ColorAlias name="marker label" alias="arc-background-dark"/>
-    <ColorAlias name="marker track" alias="arc-foreground"/>
     <ColorAlias name="master monitor section button active: fill" alias="arc-red-dark"/>
     <ColorAlias name="master monitor section button active: fill active" alias="arc-yellow"/>
     <ColorAlias name="master monitor section button normal: fill active" alias="arc-background-light"/>
-    <ColorAlias name="measure line bar" alias="arc-foreground"/>
-    <ColorAlias name="measure line beat" alias="arc-blue"/>
     <ColorAlias name="meter background bottom" alias="arc-background-light"/>
     <ColorAlias name="meter background top" alias="arc-background"/>
     <ColorAlias name="meter bar" alias="arc-background"/>
@@ -243,23 +227,17 @@
     <ColorAlias name="midi meter color8" alias="midi meter 56"/>
     <ColorAlias name="midi meter color9" alias="midi meter 56"/>
     <ColorAlias name="midi note inactive channel" alias="arc-background-dark"/>
-    <ColorAlias name="midi note max" alias="arc-green"/>
-    <ColorAlias name="midi note mid" alias="arc-yellow"/>
-    <ColorAlias name="midi note min" alias="arc-orange"/>
     <ColorAlias name="midi note selected" alias="arc-blue-dark"/>
     <ColorAlias name="midi note selected outline" alias="arc-white"/>
     <ColorAlias name="midi note velocity text" alias="arc-red"/>
     <ColorAlias name="midi patch change fill" alias="arc-blue"/>
     <ColorAlias name="midi patch change outline" alias="arc-foreground-light"/>
-    <ColorAlias name="midi select rect outline" alias="arc-red"/>
     <ColorAlias name="midi sysex fill" alias="arc-red"/>
     <ColorAlias name="midi sysex outline" alias="arc-green"/>
     <ColorAlias name="midi track base" alias="arc-background-teal"/>
     <ColorAlias name="mixer strip button: fill" alias="arc-background-light"/>
     <ColorAlias name="mixer strip button: fill active" alias="arc-orange"/>
     <ColorAlias name="mixer strip button: led active" alias="arc-green"/>
-    <ColorAlias name="mixer strip name button: fill active" alias="arc-background-dark"/>
-    <ColorAlias name="mixer strip name button: led active" alias="arc-green"/>
     <ColorAlias name="monitor button: fill" alias="arc-background-light"/>
     <ColorAlias name="monitor button: fill active" alias="arc-orange"/>
     <ColorAlias name="monitor button: led active" alias="arc-red-dark"/>
@@ -294,8 +272,6 @@
     <ColorAlias name="mute button: fill" alias="arc-background-light"/>
     <ColorAlias name="mute button: fill active" alias="arc-yellow"/>
     <ColorAlias name="mute button: led active" alias="arc-yellow"/>
-    <ColorAlias name="name highlight fill" alias="arc-blue"/>
-    <ColorAlias name="name highlight outline" alias="arc-background"/>
     <ColorAlias name="neutral:background" alias="arc-background-dark"/>  <!--audio track base-->
     <ColorAlias name="neutral:background2" alias="arc-background-light"/>  <!--range marker bar-->
     <ColorAlias name="neutral:backgroundest" alias="arc-background-dark"/>  <!--border color-->
@@ -388,14 +364,12 @@
     <ColorAlias name="recording waveform fill" alias="arc-foreground"/>
     <ColorAlias name="recording waveform outline" alias="arc-background-light"/>
     <ColorAlias name="region automation line" alias="arc-blue"/>
-    <ColorAlias name="region list automatic" alias="arc-blue"/>
     <ColorAlias name="region list missing source" alias="arc-red"/>
     <ColorAlias name="region list whole file" alias="arc-foreground-light"/>
     <ColorAlias name="region mark" alias="arc-green"/>
     <ColorAlias name="route button: fill" alias="arc-background-light"/>
     <ColorAlias name="route button: fill active" alias="arc-background-dark"/>
     <ColorAlias name="route button: led active" alias="arc-green"/>
-    <ColorAlias name="route rec button: led active" alias="arc-red"/>
     <ColorAlias name="rta freeze button: fill" alias="arc-background-light"/>
     <ColorAlias name="rta freeze button: fill active" alias="arc-yellow"/>
     <ColorAlias name="rubber band rect" alias="arc-foreground"/>
@@ -419,7 +393,6 @@
     <ColorAlias name="secondary delta clock: cursor" alias="arc-green"/>
     <ColorAlias name="secondary delta clock: edited text" alias="arc-green"/>
     <ColorAlias name="secondary delta clock: text" alias="arc-green"/>
-    <ColorAlias name="selected midi note frame" alias="arc-white"/>
     <ColorAlias name="selected region base" alias="arc-blue"/>
     <ColorAlias name="selected time axis frame" alias="arc-blue"/>
     <ColorAlias name="selected waveform fill" alias="arc-foreground-light"/>
@@ -506,9 +479,7 @@
     <ColorAlias name="transport delta clock: cursor" alias="arc-green"/>
     <ColorAlias name="transport delta clock: edited text" alias="arc-green"/>
     <ColorAlias name="transport delta clock: text" alias="arc-green"/>
-    <ColorAlias name="transport drag rect" alias="arc-foreground-dark"/>
     <ColorAlias name="transport loop rect" alias="arc-blue"/>
-    <ColorAlias name="transport marker bar" alias="arc-background-light"/>
     <ColorAlias name="transport option button: fill" alias="arc-background-light"/>
     <ColorAlias name="transport option button: fill active" alias="arc-blue"/>
     <ColorAlias name="transport option button: led active" alias="arc-green"/>
@@ -525,7 +496,6 @@
     <ColorAlias name="vari button: fill active" alias="arc-red-dark"/>
     <ColorAlias name="vca assign button: fill" alias="arc-background-light"/>
     <ColorAlias name="verbose canvas cursor" alias="arc-green"/>
-    <ColorAlias name="video timeline bar" alias="arc-background-light"/>
     <ColorAlias name="waveform fill" alias="arc-white"/>
     <ColorAlias name="waveform outline" alias="arc-background-dark"/>
     <ColorAlias name="widget:bg" alias="arc-background-light"/>    <!--generic button-->

@@ -2291,11 +2291,17 @@ Pianoroll::select_all_within (Temporal::timepos_t const & start, Temporal::timep
 
 	AutomationLane* lane (nullptr);
 	Evoral::Parameter param (NullAutomation);
-	ArdourCanvas::Duple d (0., y0);
+	ArdourCanvas::Duple top (0., y0);
+	ArdourCanvas::Duple bottom (0., y1);
 
 	for (auto & [p,l] : automation_lanes) {
 		ArdourCanvas::Rect r (l->group->get().translate (l->group->position()));
-		if (r.contains (d)) {
+		if (r.contains (top)) {
+			lane = l;
+			param = p;
+			break;
+		}
+		if (r.contains (bottom)) {
 			lane = l;
 			param = p;
 			break;

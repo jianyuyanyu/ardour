@@ -562,10 +562,6 @@ Pianoroll::build_canvas ()
 
 	UIConfiguration::instance().DPIReset.connect ([sw]() { sw->queue_resize(); });
 
-//	Gtk::Requisition req;
-//	midi_inspector->size_request (req);
-//	sw->set_size_request (req.width, -1);
-
 	_hpacker.pack_start (*sw, false, false);
 	_hpacker.reorder_child (*sw, 0);
 

@@ -809,9 +809,10 @@ Evoral::Parameter
 Pianoroll::automation_by_y (double y)
 {
 	ArdourCanvas::Duple d (0., y);
+	double timebars = n_timebars * timebar_height;
 
 	for (auto & [param,lane] : automation_lanes) {
-		ArdourCanvas::Rect r (lane->group->get().translate (lane->group->position()));
+		ArdourCanvas::Rect r (lane->group->get().translate (lane->group->position()).translate (ArdourCanvas::Duple (0, timebars)));
 		if (r.contains (d)) {
 			return param;
 		}

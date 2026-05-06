@@ -488,7 +488,9 @@ OSC::register_callbacks()
 		REGISTER_CALLBACK (serv, X_("/rec_enable_toggle"), "f", rec_enable_toggle);
 		REGISTER_CALLBACK (serv, X_("/toggle_all_rec_enables"), "", toggle_all_rec_enables);
 		REGISTER_CALLBACK (serv, X_("/toggle_all_rec_enables"), "f", toggle_all_rec_enables);
+		REGISTER_CALLBACK (serv, X_("/all_tracks_rec_in"), "", all_tracks_rec_in);
 		REGISTER_CALLBACK (serv, X_("/all_tracks_rec_in"), "f", all_tracks_rec_in);
+		REGISTER_CALLBACK (serv, X_("/all_tracks_rec_out"), "", all_tracks_rec_out);
 		REGISTER_CALLBACK (serv, X_("/all_tracks_rec_out"), "f", all_tracks_rec_out);
 		REGISTER_CALLBACK (serv, X_("/cancel_all_solos"), "f", cancel_all_solos);
 		REGISTER_CALLBACK (serv, X_("/remove_marker"), "", remove_marker_at_playhead);
